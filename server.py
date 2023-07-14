@@ -23,10 +23,12 @@ def decode():
     encrypted = Json["encrypted"]
     hash = Json["hash"]
     decrypted = decrypt_AES_CBC_256("0123456789010123", encrypted)
-    verify_hash(decrypted,hash)
-    data = ast.literal_eval(decrypted)
-    log_to_database(data)
-    return ("received")
+    if verify_hash(decrypted,hash):
+        data = ast.literal_eval(decrypted)
+        log_to_database(data)
+        return jsonify({"status":"received"})
+    else:
+        return jsonify({"status":"Data compromised not saved to db"})
 
 def decrypt_AES_CBC_256(key, ciphertext):
     key_bytes = key.encode('utf-8')
