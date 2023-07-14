@@ -18,11 +18,12 @@ def encrypt_AES_CBC_256(key, message):
 
 # Set the 12-bit key and plaintext message
 key = '0123456789010123'
-message = """"sensor id": "1",
+message = """{"sensor_id": "1",
                "temperature" :45,
                "humidity": 80,
-               "wind-speed": 25,
-               "location": "f5s6+7c" """
+               "wind_speed": 25,
+               "location": "f5s6+7c"}"""
+               
 
 # Encrypt the message
 encrypted_message = encrypt_AES_CBC_256(key, message)
