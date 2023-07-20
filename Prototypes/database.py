@@ -39,4 +39,16 @@ def create_documents():
         docs.append(doc)
     person_collection.insert_many(docs)
 
-create_documents()
+printer = pprint.PrettyPrinter()
+
+def find_all_people():
+    people = person_collection.find()
+
+    for person in people:
+        printer.pprint(person)
+
+def find_A():
+    A = person_collection.find_one({"first_name": "A"})
+    printer.pprint(A["last_name"])
+
+find_A()

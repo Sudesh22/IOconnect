@@ -1,0 +1,21 @@
+.landUpPage{
+  position: relative;
+}
+.titles{
+  max-width: 400px;
+  position: absolute;
+  left: 180px;
+  top: 140px;
+}
+.container{
+  position: inherit;
+  top: 70px;
+  left: 700px;
+}
+h1{
+  
+  font-size: 12px;
+}
+p{
+  font-size: 24px;
+}

@@ -1,5 +1,6 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
-from logger import log_to_database
+from logger import log_to_database, add_user
+from authenticate import authenticate
 from flask import Flask, jsonify, request, send_file
 from datetime import datetime
 from flask_cors import CORS
@@ -25,6 +26,23 @@ def decode():
         return jsonify({"status":"received"})
     else:
         return jsonify({"status":"Data compromised not saved to db"})
+    
+@app.post("/signin")
+def signIn():
+    data = request.get_json()
+    email = data["email"]
+    password = data["password"]
+    if authenticate(email, password):
+        return (authenticate(email, password))
+    else:
+        return jsonify({"status": "Error logging in"})
+
+@app.post("/signup")
+def signUp():
+    new_user = request.get_json()
+    add_user(new_user)
+    return jsonify({"Status" : "User added succesfully"})
+
 
 # @app.get("/get_csv")
 # def get_csv():
