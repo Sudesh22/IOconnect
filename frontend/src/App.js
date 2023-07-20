@@ -25,9 +25,8 @@ export default function App() {
         ...prev,
         user:
         {
-          id: data[0],
-          name: data[1],
-          email: data[2],
+          name: data[0],
+          email: data[1],
           joined: data.joined
         }
       }))

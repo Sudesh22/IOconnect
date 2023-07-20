@@ -1,17 +1,11 @@
 import React from 'react';
+import {sha256} from 'js-sha256'
 
 export default function Signin({ onRouteChange,loadUser }) {
     const [signIn, setSignIn] = React.useState({
         signInEmail: '',
         signInPassword: ''
     })
-    // function encrypt(email, password) {
-    //     var encrypted = CryptoJS.AES.encrypt(
-    //         document.getElementById("email-address").value,
-    //         document.getElementById("password").value
-    //      );
-    //      return encrypted
-    //   }
     function handleChange(e) {
         const { name, value } = e.target;
         setSignIn(prev => ({ ...prev, [name]: value }))
@@ -21,14 +15,14 @@ export default function Signin({ onRouteChange,loadUser }) {
             method: 'post',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
-                email: signIn.signInEmail,
-                password: signIn.signInPassword
+                email: sha256(signIn.signInEmail),
+                password: sha256(signIn.signInPassword)
             })
         })
             .then(response => response.json())
             .then(user => {
-                if (user[0][0]) {
-                    loadUser(user[0]);
+                if (user) {
+                    loadUser(user);
                     onRouteChange('home')
                 }
             })

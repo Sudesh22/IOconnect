@@ -1,5 +1,5 @@
-
 import React from 'react';
+import {sha256} from 'js-sha256'
 
 export default function Signup({ onRouteChange, loadUser }) {
     const [signUp, setSignUp] = React.useState({
@@ -16,9 +16,9 @@ export default function Signup({ onRouteChange, loadUser }) {
             method: 'post',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
-                name: signUp.signUpName,
-                email: signUp.signUpEmail,
-                password: signUp.signUpPassword,
+                name: sha256(signUp.signUpName),
+                email: sha256(signUp.signUpEmail),
+                password: sha256(signUp.signUpPassword),
             })
         })
             .then(response => response.json())

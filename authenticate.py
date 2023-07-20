@@ -18,10 +18,7 @@ def authenticate(email, passwd):
     user = user_creds_collection.find_one({"email": f"{email}"})
     print(user)
     if user["password"] == passwd:
-        msg = [
-            "name" , user["name"],
-            "email", user["email"]
-        ]
+        msg = [user["name"], user["email"]]
         return msg
     else:
         return False

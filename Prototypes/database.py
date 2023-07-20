@@ -43,12 +43,14 @@ printer = pprint.PrettyPrinter()
 
 def find_all_people():
     people = person_collection.find()
-
+    
     for person in people:
-        printer.pprint(person)
+        printer.pprint(person["first_name"])
+
+find_all_people()
 
 def find_A():
     A = person_collection.find_one({"first_name": "A"})
     printer.pprint(A["last_name"])
 
-find_A()
+# find_A()
