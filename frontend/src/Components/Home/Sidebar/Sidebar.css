@@ -1,0 +1,47 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  color: grey;
+}
+.sidebar .title {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 3px;
+}
+.sidebar .title .logo {
+  width: 60px;
+}
+.sidebar .title .name {
+  font-size: 1.6rem;
+  margin-top: 0;
+}
+.sidebar ul {
+  padding: 0;
+  margin: 0;
+}
+.sidebar ul li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem;
+  margin: 0.09375rem 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  width: 100%;
+}
+.nav-text span {
+  margin-left: 15px;
+  font-size: 1rem;
+}
+.sidebar ul li a {
+  text-decoration: none;
+  color: white;
+}
+.sidebar ul li:hover {
+  background-color: #1a1b21;
+  color: white;
+}
+.sidebar ul li:active {
+  color: #1a73e8;
+}

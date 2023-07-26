@@ -1,0 +1,16 @@
+.all-graph {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+.dashboard-status {
+  display: flex;
+}
+
+.device-status {
+  color: green;
+}
+.dashboard {
+  color: white;
+  font-size: 1.5rem;
+}

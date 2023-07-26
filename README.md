@@ -18,6 +18,7 @@ Our Final Year Project on IIoT (Industry 4.0)
 - [x] Research hosting server on Raspberry-PI
 - [x] Make the Raspberry-PI server online
 - [x] Decide Online Database
-- [x] Conduct Tests
+- [x] Conduct Tests on Database
+- [x] Implement Encrypted Login
 - [ ] Decide Sensors and the MCU
 - [ ] Add ML/AI to the project

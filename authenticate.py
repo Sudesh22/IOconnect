@@ -13,7 +13,6 @@ client = MongoClient(connection_string)
 user_creds = client.user_creds
 user_creds_collection = user_creds.user_creds_collection
 
-
 def authenticate(email, passwd):
     user = user_creds_collection.find_one({"email": f"{email}"})
     print(user)

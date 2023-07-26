@@ -1,0 +1,11 @@
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.bg-custom {
+  background-color: #1a1b21;
+}
+.custom {
+  height: 100vh;
+}

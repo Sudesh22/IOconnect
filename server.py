@@ -43,22 +43,21 @@ def signUp():
     add_user(new_user)
     return jsonify({"Status" : "User added succesfully"})
 
-
-# @app.get("/get_csv")
-# def get_csv():
-#     csvWriter = csv.writer(open("output.csv", "a"))
-#     conn = sqlite3.connect('test.db')
-#     c = conn.cursor()
-#     rows = c.execute("SELECT * FROM DataLogging").fetchall()
-#     print(rows)
-#     for x in rows:
-#         csvWriter.writerow(x)    
-#     return send_file("output.csv")
-
 if __name__ == "__main__":
     app.debug=True
-    # IPAddr = socket.gethostbyname(socket.gethostname())  
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8",80))
     IPAddr = s.getsockname()[0]
-    app.run(host=IPAddr, port=5000)
+    port = 5000
+
+    def add_ip(file_path, line_num, text):
+        lines = open(file_path, 'r').readlines()
+        lines[line_num] = text
+        out = open(file_path, 'w')
+        out.writelines(lines)
+        out.close()
+
+    add_ip("frontend\src\App.js", 8, "    const baseUrl = \"" + "http://" + str(IPAddr) + ":" + str(port) + "\";\n")
+    add_ip("frontend\package.json", 5, " \"proxy\":\"" + "http://" + str(IPAddr) + ":" + str(port) + "\",\n")
+    
+    app.run(host=IPAddr, port=port)
