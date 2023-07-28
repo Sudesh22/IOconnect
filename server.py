@@ -1,7 +1,8 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
 from logger import log_to_database, add_user
 from authenticate import authenticate
-from flask import Flask, jsonify, request, send_file
+from verification import send_mail
+from flask import Flask, jsonify, request
 from datetime import datetime
 from flask_cors import CORS
 
@@ -40,7 +41,15 @@ def signIn():
 @app.post("/signup")
 def signUp():
     new_user = request.get_json()
+    print(new_user)
+    # send_mail(new_user["email"])
     add_user(new_user)
+    return jsonify({"Status" : "Verification pending"})
+
+@app.post("/verify")
+def verify():
+    otp = request.get_json()
+    print(otp)
     return jsonify({"Status" : "User added succesfully"})
 
 if __name__ == "__main__":
@@ -57,7 +66,7 @@ if __name__ == "__main__":
         out.writelines(lines)
         out.close()
 
-    add_ip("frontend\src\App.js", 8, "    const baseUrl = \"" + "http://" + str(IPAddr) + ":" + str(port) + "\";\n")
-    add_ip("frontend\package.json", 5, " \"proxy\":\"" + "http://" + str(IPAddr) + ":" + str(port) + "\",\n")
+    add_ip("frontend/src/App.js", 9, "    const baseUrl = \"" + "http://" + str(IPAddr) + ":" + str(port) + "\";\n")
+    add_ip("frontend/package.json", 4, "  \"proxy\":\"" + "http://" + str(IPAddr) + ":" + str(port) + "\",\n")
     
-    app.run(host=IPAddr, port=port)
+    app.run(host=IPAddr, port=port, ssl_context='adhoc')

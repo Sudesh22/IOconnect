@@ -1,4 +1,8 @@
 import React from "react";
+import {sha256} from 'js-sha256'
+import CryptoJS from "crypto-js";
+
+const secretPass = "XkhZG4fW2t2W";
 
 export default function Signin({ onRouteChange, loadUser, baseUrl }) {
   const [signIn, setSignIn] = React.useState({
@@ -16,12 +20,13 @@ export default function Signin({ onRouteChange, loadUser, baseUrl }) {
       method: "post",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        email: signIn.signInEmail,
-        password: signIn.signInPassword,
+        email: CryptoJS.AES.encrypt(signIn.signInEmail,secretPass),
+        password: sha256(signIn.signInPassword),
       }),
     })
       .then((response) => response.json())
       .then((user) => {
+        console.log(user)
         if (user[0][0]) {
           loadUser(user[0]);
           onRouteChange("home");
