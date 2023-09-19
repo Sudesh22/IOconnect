@@ -2,7 +2,7 @@ import './Notification.css';
 
 export default function Notification(){
     return(
-        <div className='team-container'>
+        <div className='notification-container'>
             <p>Notification</p>
         </div>
     )
