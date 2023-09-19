@@ -7,7 +7,7 @@ import Home from "./Components/Home/Home";
 import Verify from "./Components/Verify/Verify";
 
 export default function App() {
-    const baseUrl = "http://192.168.0.104:5000";
+    const baseUrl = "http://192.168.0.108:5000";
 
   const [state, setState] = React.useState({
     route: "signin",
@@ -35,6 +35,7 @@ export default function App() {
           <Verify
             onRouteChange={onRouteChange}
             user={state.user}
+            loadUser={loadUser}
             baseUrl={baseUrl}
           />
         ) : (

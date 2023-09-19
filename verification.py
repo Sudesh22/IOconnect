@@ -1,8 +1,8 @@
-from random import randint
 import smtplib, os
 from email.mime.text import MIMEText
 from dotenv import load_dotenv, find_dotenv
 from email.mime.multipart import MIMEMultipart
+from authenticate import get_token
 
 load_dotenv(find_dotenv())
 Sender_Password = os.environ.get("EMAIL_PWD")
@@ -11,14 +11,9 @@ Sender_Email = os.environ.get("SENDER_EMAIL")
 tls_Port = 587
 smtp_server = 'smtp.gmail.com'
 
-verification_token = randint(000000, 999999)
-while len(str(verification_token))<5:
-    print(verification_token)
-    verification_token = randint(000000, 999999)
-    print(verification_token)
-
 def send_mail(Receiver_Email):
     aes_password = os.environ.get("AES_PWD")
+    token = get_token(Receiver_Email)
     try: 
         smtp = smtplib.SMTP(smtp_server, tls_Port) 
         smtp.starttls() 
@@ -55,7 +50,7 @@ def send_mail(Receiver_Email):
                                                         <h1 style="font-size:16px; line-height:30px; font-weight:bold;">Almost there! Just confirm your email 📬!</h1>
                                                         <p>
                                                             Dear customer,<br>
-                                                            <h1>''' + str(verification_token) + '''</h1> is your one time password (OTP). Please do not share the OTP with others<br>
+                                                            <h1>''' + str(token) + '''</h1> is your one time password (OTP). Please do not share the OTP with others<br>
                                                             Regards,<br>
                                                             Team Manjrekar
                                                         </p>
@@ -99,7 +94,7 @@ def send_mail(Receiver_Email):
                     '''
 
         message = MIMEMultipart("alternative")
-        message["Subject"] = "OTP for Login - " + str(verification_token)
+        message["Subject"] = "OTP for Login - " + str(token)
         message["From"] = Sender_Email
         message["To"] = Receiver_Email
 
@@ -111,6 +106,8 @@ def send_mail(Receiver_Email):
 
         smtp.quit() 
         print ("Email sent successfully!") 
+        return token
 
     except Exception as excp:   
         print("Something went wrong....",excp)
+        return "error"

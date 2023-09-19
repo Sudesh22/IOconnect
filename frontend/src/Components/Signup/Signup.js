@@ -1,5 +1,5 @@
 import React from "react";
-import {sha256} from 'js-sha256'
+import {sha256} from 'js-sha256';
 import CryptoJS from "crypto-js";
 
 const secretPass = "XkhZG4fW2t2W2145";
@@ -19,8 +19,8 @@ export default function Signup({ onRouteChange, loadUser, baseUrl }) {
       method: "post",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        name: CryptoJS.AES.encrypt(signUp.signUpName,secretPass,{mode: CryptoJS.mode.CBC}).toString(),
-        email: CryptoJS.AES.encrypt(signUp.signUpEmail,secretPass,{mode: CryptoJS.mode.CBC}).toString(),
+        name: signUp.signUpName,
+        email: signUp.signUpEmail,
         password: sha256(signUp.signUpPassword),
       }),
     })

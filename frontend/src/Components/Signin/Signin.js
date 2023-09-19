@@ -46,6 +46,35 @@ export default function Signin({ onRouteChange, loadUser, baseUrl }) {
       style={{ backgroundColor: "#1c1b1b" }}
       className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center"
     >
+      {/* <py-script>
+        import asyncio
+        import json
+        from request import request  # import our request function.
+
+        async def main():
+            baseurl = "https://jsonplaceholder.typicode.com"
+
+            # GET
+            headers = {"Content-type"}
+            response = await request(f"{baseUrl}/posts/2", method="GET", headers=headers)
+            print(f"GET request= status:{response.status}, json:{await response.json()}")
+
+            # POST
+            body = json.dumps({"title"})
+            new_post = await request(f"{baseUrl}/posts", body=body, method="POST", headers=headers)
+            print(f"POST request= status:{new_post.status}, json:{await new_post.json()}")
+
+            # PUT
+            body = json.dumps({"id"})
+            new_post = await request(f"{baseUrl}/posts/1", body=body, method="PUT", headers=headers)
+            print(f"PUT request= status:{new_post.status}, json:{await new_post.json()}")
+
+            # DELETE
+            new_post = await request(f"{baseUrl}/posts/1", method="DELETE", headers=headers)
+            print(f"DELETE request= status:{new_post.status}, json:{await new_post.json()}")
+
+        asyncio.ensure_future(main())
+    </py-script>  */}
       <main className="pa3 black-80 center">
         <div className="measure tc">
           <fieldset id="sign_up" className="ba b--transparent ph0 mh0">

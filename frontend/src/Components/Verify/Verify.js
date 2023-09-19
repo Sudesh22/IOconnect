@@ -21,7 +21,7 @@ export default function Verify({ onRouteChange, loadUser, baseUrl }) {
         
           console.log(user)
           loadUser(user);
-          onRouteChange("signin");
+          onRouteChange("home");
         
       });
   }

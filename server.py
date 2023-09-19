@@ -1,6 +1,6 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
 from logger import log_to_database, add_user
-from authenticate import authenticate
+from authenticate import authenticate,check_token
 from verification import send_mail
 from flask import Flask, jsonify, request
 from datetime import datetime
@@ -42,14 +42,15 @@ def signIn():
 def signUp():
     new_user = request.get_json()
     print(new_user)
-    # send_mail(new_user["email"])
-    add_user(new_user)
-    return jsonify({"Status" : "Verification pending"})
+    username = add_user(new_user)
+    send_mail(new_user["email"])
+    return jsonify({"Status" : "Verification pending", "username" : username})
 
 @app.post("/verify")
 def verify():
-    otp = request.get_json()
-    print(otp)
+    response = request.get_json()
+    print(response)
+    # check_token(response["name"],response["otp"])
     return jsonify({"Status" : "User added succesfully"})
 
 if __name__ == "__main__":
@@ -69,4 +70,4 @@ if __name__ == "__main__":
     add_ip("frontend/src/App.js", 9, "    const baseUrl = \"" + "http://" + str(IPAddr) + ":" + str(port) + "\";\n")
     add_ip("frontend/package.json", 4, "  \"proxy\":\"" + "http://" + str(IPAddr) + ":" + str(port) + "\",\n")
     
-    app.run(host=IPAddr, port=port, ssl_context='adhoc')
+    app.run(host=IPAddr, port=port)

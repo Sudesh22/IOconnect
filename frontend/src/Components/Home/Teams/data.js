@@ -6,15 +6,15 @@ export const data = [
     img: "./sudesh.jpeg",
   },
   {
-    name: "Mohammad Qasim",
-    skill: "Full Stack Developer",
-    webLink: "mohammadqasim.website",
+    name: "Neerav Desai",
+    skill: "Embedded Systems Developer",
+    webLink: "neerav.website",
     img: "./qasim.png",
   },
   {
-    name: "Mandar Bavdane",
-    skill: "Electronics Engineer",
-    webLink: "mandarbavdane.website",
+    name: "Joshua Raj",
+    skill: "AIML Engineer",
+    webLink: "Josh.website",
     img: "./mandar.jpeg",
   },
   {

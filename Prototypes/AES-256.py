@@ -8,7 +8,7 @@ from base64 import b64encode, b64decode
 def encrypt_AES_CBC_256(key, message):
     key_bytes = key.encode('utf-8')
     message_bytes = message.encode('utf-8')
-    iv = get_random_bytes(AES.block_size)
+    iv = "BBBBBBBBBBBBBBBB".encode('utf-8')
     cipher = AES.new(key_bytes, AES.MODE_CBC, iv)
     padded_message = pad(message_bytes, AES.block_size)
     ciphertext_bytes = cipher.encrypt(padded_message)
@@ -19,7 +19,7 @@ def encrypt_AES_CBC_256(key, message):
 def decrypt_AES_CBC_256(key, ciphertext):
     key_bytes = key.encode('utf-8')
     ciphertext_bytes = b64decode(ciphertext)
-    iv = ciphertext_bytes[:AES.block_size]
+    iv = "BBBBBBBBBBBBBBBB".encode('utf-8')
     cipher = AES.new(key_bytes, AES.MODE_CBC, iv)
     ciphertext_bytes = ciphertext_bytes[AES.block_size:]
     decrypted_bytes = cipher.decrypt(ciphertext_bytes)

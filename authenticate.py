@@ -21,3 +21,13 @@ def authenticate(email, passwd):
         return msg
     else:
         return False
+    
+def get_token(email):
+    user = user_creds_collection.find_one({"email": f"{email}"})
+    print(user)
+    return user["Verification Token"]
+
+def check_token(username,token):
+    user = user_creds_collection.find_one({"email": f"{email}"})
+    print(user)
+    return user["Verification Token"]
