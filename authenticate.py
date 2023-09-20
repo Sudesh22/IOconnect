@@ -6,7 +6,7 @@ load_dotenv(find_dotenv())
 
 password = os.environ.get("MONGODB_PWD")
 
-connection_string = f"mongodb+srv://Group1:{password}@testdb.dhmeogy.mongodb.net/?retryWrites=true&w=majority"
+connection_string = f"mongodb+srv://Group1:{password}@testdb.dhmeogy.mongodb.net/"
 
 client = MongoClient(connection_string)
 
@@ -18,7 +18,8 @@ def authenticate(email, passwd):
     print(user)
     if user["password"] == passwd:
         msg = [user["name"], user["email"]]
-        return msg
+        msg = {"user" : user["name"], "email" : user["email"]}
+        return True
     else:
         return False
     

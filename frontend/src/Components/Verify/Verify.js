@@ -1,19 +1,19 @@
-import React from "react";
+import './Verify.css';
+import React, { useState } from 'react';
+import OtpInput from 'react-otp-input';
 
 export default function Verify({ onRouteChange, loadUser, baseUrl }) {
-  const [verify, setVerify] = React.useState({
-    otp : ""
-  });
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setVerify((prev) => ({ ...prev, [name]: value }));
-  }
+  const [otp, setOtp] = useState(new Array(6).fill(""));
+  // function handleChange(e) {
+  //   const { name, value } = e.target;
+  //   setVerify((prev) => ({ ...prev, [name]: value }));
+  // }
   function onSubmitVerify() {
     fetch(`${baseUrl}/verify`, {
       method: "post",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        otp: verify.otp,
+        "jhg":"jhgf"
       }),
     })
       .then((response) => response.json())
@@ -21,7 +21,7 @@ export default function Verify({ onRouteChange, loadUser, baseUrl }) {
         
           console.log(user)
           loadUser(user);
-          onRouteChange("home");
+          onRouteChange("Dashboard");
         
       });
   }
@@ -34,23 +34,33 @@ export default function Verify({ onRouteChange, loadUser, baseUrl }) {
       <main className="pa3 black-80 center">
         <div className="measure tc">
           <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-            <legend className="f1 fw6 ph0 mh0 white">Verification Code</legend>
+            <legend className="f1 fw6 ph0 mh0 white">OTP Verification</legend>
               <div className="mt3">
                 <label
                   className="db fw5 lh-copy f5 white"
                   htmlFor="verification-code"
                 >
-                  Enter the 6-digit code received on your Email address
+                  An otp has been sent to your registered email address
                 </label>
-                <input
+                <p class="msg">Please enter OTP to verify</p>
+                {/* <input
                   className="pa2 input-reset ba bg-transparent white hover-white w-100"
                   type="text"
                   name="otp"
                   id="verification-code"
                   onChange={handleChange}
-                />
+                /> */}
+                <div class="otp-input-fields">
+                  <p></p>
+                  <OtpInput
+      value={otp}
+      onChange={setOtp}
+      numInputs={4}
+      renderSeparator={<span>-</span>}
+      renderInput={(props) => <input {...props} />}
+    />
+                </div>
               </div>
-            
           </fieldset>
           <div className="">
             <input

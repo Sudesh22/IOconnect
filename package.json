@@ -1,5 +1,13 @@
 {
   "dependencies": {
-    "pyodide": "^0.23.4"
+    "chart.js": "^4.4.0",
+    "crypto-js": "^4.1.1",
+    "js-sha256": "^0.10.1",
+    "pyodide": "^0.23.4",
+    "react-chartjs-2": "^5.2.0",
+    "react-gauge-chart": "^0.4.1",
+    "react-hook-form": "^7.46.1",
+    "react-icons": "^4.11.0",
+    "react-otp-input": "^3.0.4"
   }
 }

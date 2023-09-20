@@ -91,7 +91,7 @@ const Graph = ({ condition, chartData }) => {
     scales: {
       y: {
         grid: {
-          color: "#0d0d0d",
+          color: "#5f5f5f",
           borderColor: "rgba(256,256,256,0.7)",
         },
         ticks: {
@@ -103,7 +103,7 @@ const Graph = ({ condition, chartData }) => {
       },
       x: {
         grid: {
-          color: "#0d0d0d",
+          color: "#5f5f5f",
           borderColor: "rgba(256,256,256,0.7)",
         },
         ticks: {

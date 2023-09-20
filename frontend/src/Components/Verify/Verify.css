@@ -1,0 +1,32 @@
+.otp-input-fields{
+    margin: auto;
+    /* background-color: white; */
+    box-shadow: 0px 0px 8px 0px #02025044;
+    max-width: 400px;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 40px;
+}
+.otp-input-fields .box{
+      height: 40px;
+      width: 40px;
+      background-color: transparent;
+      border-radius: 4px;
+      color: #ffffff;
+      border: 1px solid #2f8f1f;
+      text-align: center;
+      outline: none;
+      font-size: 16px;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      &:focus{
+        border-width: 2px;
+        border-color: darken(#2f8f1f, 5%);
+        font-size: 20px;
+      }
+    }

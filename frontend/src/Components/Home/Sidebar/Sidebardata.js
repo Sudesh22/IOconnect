@@ -37,6 +37,12 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
+    title: 'Settings',
+    path: '/settings',
+    icon: <FaIcons.FaCogs />,
+    cName: 'nav-text'
+  },
+  {
     title: 'Signout',
     path: '/support',
     icon: <GoIcons.GoSignOut />,

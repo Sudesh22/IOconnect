@@ -6,7 +6,7 @@ from flask import Flask, jsonify, request
 from datetime import datetime
 from flask_cors import CORS
 
-import socket, ast, csv, os
+import socket, ast, csv, os, sqlite3
 
 app = Flask(__name__)
 CORS(app)
@@ -33,10 +33,22 @@ def signIn():
     data = request.get_json()
     email = data["email"]
     password = data["password"]
+    print(email,password)
     if authenticate(email, password):
-        return (authenticate(email, password))
+        # return (authenticate(email, password))
+        return jsonify({"status": "Error logging in"})
     else:
         return jsonify({"status": "Error logging in"})
+
+@app.post("/dashboard")
+def dashboard():
+    device_id = 2
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    Data = c.execute(
+        "SELECT * FROM DataLogging WHERE Device_Id = ? ORDER BY Time DESC limit 7", (device_id,)).fetchall()
+    conn.close()
+    return jsonify(Data)
 
 @app.post("/signup")
 def signUp():
@@ -46,19 +58,20 @@ def signUp():
     send_mail(new_user["email"])
     return jsonify({"Status" : "Verification pending", "username" : username})
 
-@app.post("/verify")
+@app.post("/changePass")
 def verify():
     response = request.get_json()
     print(response)
     # check_token(response["name"],response["otp"])
-    return jsonify({"Status" : "User added succesfully"})
+    send_mail(response["signUpEmail"])
+    return jsonify({"Status" : "Mail sent succesfully"})
 
 if __name__ == "__main__":
     app.debug=True
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8",80))
     IPAddr = s.getsockname()[0]
-    port = 5000
+    port = 8081
 
     def add_ip(file_path, line_num, text):
         lines = open(file_path, 'r').readlines()
