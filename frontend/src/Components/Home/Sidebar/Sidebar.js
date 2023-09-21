@@ -3,6 +3,12 @@ import React from "react";
 import { SidebarData } from "./Sidebardata";
 
 export default function Sidebar({ onRouteChange, onInternalRouteChange }) {
+
+  function leave() {
+    localStorage.removeItem("userProfile");
+    onRouteChange("signin")
+  }
+ 
   return (
     <div className="sidebar">
       <div className="title">
@@ -18,8 +24,9 @@ export default function Sidebar({ onRouteChange, onInternalRouteChange }) {
               <li
                 key={index}
                 className={item.cName}
-                onClick={() => onRouteChange("signin")}
+                onClick={leave}
               >
+                
                 <div>
                   {item.icon}
                   <span>{item.title}</span>

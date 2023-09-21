@@ -27,6 +27,7 @@ export default function Signin({ onRouteChange, loadUser, baseUrl }) {
       .then((response) => response.json())
       .then((user) => {
         console.log(user)
+        localStorage.setItem("userProfile", (user.access_token));
         loadUser(user);
         onRouteChange("home");
       })

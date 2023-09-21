@@ -23,7 +23,6 @@ export default function Settings({ onRouteChange, baseUrl }){
             });
       }
 
-    
     return(
         <div className='setting-container'>
            <p>Settings</p> 

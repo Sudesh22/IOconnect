@@ -10,6 +10,7 @@ export default function Dashboard({ baseUrl }) {
     temperature: [],
     Time: [],
   });
+  // console.log(localStorage.getItem("userProfile"))
 
   // fetching the chart data
   React.useEffect(() => {
@@ -20,6 +21,9 @@ export default function Dashboard({ baseUrl }) {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            access_token : localStorage.getItem("userProfile"),
+          }),
         });
         const responseData = await response.json();
         const data = responseData.reverse();

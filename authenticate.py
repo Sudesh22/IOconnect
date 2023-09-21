@@ -17,10 +17,12 @@ def authenticate(email, passwd):
     user = user_creds_collection.find_one({"email": f"{email}"})
     print(user)
     if user["password"] == passwd:
-        msg = [user["name"], user["email"]]
+        # msg = [user["name"], user["email"]]
         msg = {"user" : user["name"], "email" : user["email"]}
-        return True
+        print("True")
+        return msg
     else:
+        print("False")
         return False
     
 def get_token(email):
