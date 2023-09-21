@@ -1,13 +1,92 @@
 import './Verify.css';
-import React, { useState } from 'react';
-import OtpInput from 'react-otp-input';
+import React from 'react';
 
 export default function Verify({ onRouteChange, loadUser, baseUrl }) {
-  const [otp, setOtp] = useState(new Array(6).fill(""));
   // function handleChange(e) {
   //   const { name, value } = e.target;
   //   setVerify((prev) => ({ ...prev, [name]: value }));
   // }
+  function enableInput(){
+    //Initial references
+const input = document.querySelectorAll(".input");
+const inputField = document.querySelector(".inputfield");
+const submitButton = document.getElementById("submit");
+let inputCount = 0,
+  finalInput = "";
+
+//Update input
+const updateInputConfig = (element, disabledStatus) => {
+  element.disabled = disabledStatus;
+  if (!disabledStatus) {
+    element.focus();
+  } else {
+    element.blur();
+  }
+};
+
+input.forEach((element) => {
+  element.addEventListener("keyup", (e) => {
+    e.target.value = e.target.value.replace(/[^0-9]/g, "");
+    let { value } = e.target;
+
+    if (value.length == 1) {
+      updateInputConfig(e.target, true);
+      if (inputCount <= 3 && e.key != "Backspace") {
+        finalInput += value;
+        if (inputCount < 3) {
+          updateInputConfig(e.target.nextElementSibling, false);
+        }
+      }
+      inputCount += 1;
+    } else if (value.length == 0 && e.key == "Backspace") {
+      finalInput = finalInput.substring(0, finalInput.length - 1);
+      if (inputCount == 0) {
+        updateInputConfig(e.target, false);
+        return false;
+      }
+      updateInputConfig(e.target, true);
+      e.target.previousElementSibling.value = "";
+      updateInputConfig(e.target.previousElementSibling, false);
+      inputCount -= 1;
+    } else if (value.length > 1) {
+      e.target.value = value.split("")[0];
+    }
+    submitButton.classList.add("hide");
+  });
+});
+
+window.addEventListener("keyup", (e) => {
+  if (inputCount > 3) {
+    submitButton.classList.remove("hide");
+    submitButton.classList.add("show");
+    if (e.key == "Backspace") {
+      finalInput = finalInput.substring(0, finalInput.length - 1);
+      updateInputConfig(inputField.lastElementChild, false);
+      inputField.lastElementChild.value = "";
+      inputCount -= 1;
+      submitButton.classList.add("hide");
+    }
+  }
+});
+
+const validateOTP = () => {
+  alert("Success");
+};
+
+//Start
+const startInput = () => {
+  inputCount = 0;
+  finalInput = "";
+  input.forEach((element) => {
+    element.value = "";
+  });
+  updateInputConfig(inputField.firstElementChild, false);
+};
+
+window.onload = startInput();
+
+  }
+
   function onSubmitVerify() {
     fetch(`${baseUrl}/verify`, {
       method: "post",
@@ -27,22 +106,10 @@ export default function Verify({ onRouteChange, loadUser, baseUrl }) {
   }
 
   return (
-    <article
-      style={{ backgroundColor: "#1c1b1b" }}
-      className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center"
-    >
-      <main className="pa3 black-80 center">
         <div className="measure tc">
           <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-            <legend className="f1 fw6 ph0 mh0 white">OTP Verification</legend>
               <div className="mt3">
-                <label
-                  className="db fw5 lh-copy f5 white"
-                  htmlFor="verification-code"
-                >
-                  An otp has been sent to your registered email address
-                </label>
-                <p class="msg">Please enter OTP to verify</p>
+                
                 {/* <input
                   className="pa2 input-reset ba bg-transparent white hover-white w-100"
                   type="text"
@@ -50,28 +117,34 @@ export default function Verify({ onRouteChange, loadUser, baseUrl }) {
                   id="verification-code"
                   onChange={handleChange}
                 /> */}
-                <div class="otp-input-fields">
-                  <p></p>
-                  <OtpInput
-      value={otp}
-      onChange={setOtp}
-      numInputs={4}
-      renderSeparator={<span>-</span>}
-      renderInput={(props) => <input {...props} />}
-    />
+                 <div class="container" onClick={enableInput}>
+            <legend className="f2 fw6 ph0 mh0 white center">OTP Verification</legend>
+            <label
+                  className="db fw5 lh-copy f5 white"
+                  htmlFor="verification-code"
+                >
+                  An otp has been sent to your registered email address
+                </label>
+                {/* <p class="msg">Please enter OTP to verify</p> */}
+                <div class="inputfield">
+                  <input type="number" maxlength="1" class="input"/>
+                  <input type="number" maxlength="1" class="input"/>
+                  <input type="number" maxlength="1" class="input"/>
+                  <input type="number" maxlength="1" class="input"/>
                 </div>
+                <button class="hide" id="submit" onclick="validateOTP()">Submit</button>
+              </div>
               </div>
           </fieldset>
           <div className="">
-            <input
+            {/* <input
               className="b ph3 pv1 input-reset ba b--white bg-transparent grow pointer f6 dib white"
               type="submit"
               value="Submit"
               onClick={onSubmitVerify}
-            />
+            /> */}
           </div>
         </div>
-      </main>
-    </article>
+      
   );
 }
