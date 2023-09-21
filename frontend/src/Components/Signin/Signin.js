@@ -1,12 +1,15 @@
 import React from "react";
 import {sha256} from 'js-sha256'
-import CryptoJS from "crypto-js";
+// import CryptoJS from "crypto-js";
 
-const secretPass = "XkhZG4fW2t2W";
-
+// const secretPass = "XkhZG4fW2t2W";
 export default function Signin({ onRouteChange, loadUser, baseUrl }) {
+  
+  if (localStorage.getItem("userProfile")){
+    onRouteChange("home")
+  }
   const [signIn, setSignIn] = React.useState({
-    isError: false,
+    isError : false,
     errorMessage: "",
     signInEmail: "",
     signInPassword: "",
@@ -26,19 +29,29 @@ export default function Signin({ onRouteChange, loadUser, baseUrl }) {
     })
       .then((response) => response.json())
       .then((user) => {
-        console.log(user)
+        console.log(user.state === "Succesful")
+        if ((user.status) === "Succesful"){
         localStorage.setItem("userProfile", (user.access_token));
         loadUser(user);
         onRouteChange("home");
+        }
+        else{
+          setSignIn((prev) => ({
+            ...prev,
+            errorMessage: "Bad Credentials!",
+            isError: true,
+          }));
+          // console.log(err);
+        }
       })
-      .catch((err) => {
-        setSignIn((prev) => ({
-          ...prev,
-          errorMessage: "Bad Credentials!",
-          isError: true,
-        }));
-        console.log(err);
-      });
+      // .catch((err) => {
+      //   setSignIn((prev) => ({
+      //     ...prev,
+      //     errorMessage: "Bad Credentials!",
+      //     isError: true,
+      //   }));
+      //   console.log(err);
+      // });
   }
   return (
     <article

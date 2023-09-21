@@ -1,12 +1,11 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
-from logger import log_to_database, add_user
+from logger import log_to_database, add_user, showData
 from authenticate import authenticate,check_token
 from verification import send_mail
 from flask import Flask, jsonify, request
 from datetime import datetime
 from flask_cors import CORS
 from flask_caching import Cache 
-from DatabaseLogger import showData
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -42,37 +41,32 @@ def decode():
         return jsonify({"status":"Data compromised not saved to db"})
     
 @app.post("/signin")
-@cache.cached(timeout=cache_timeout) 
+# @cache.cached(timeout=cache_timeout) 
 def signIn():
-    data = request.get_json()
-    email = data["email"]
-    password = data["password"]
-    print(email,password)
-    access_token = create_access_token(identity=email)
-    return jsonify(access_token=access_token)
-    # if authenticate(email, password):
-    #     return (authenticate(email, password))
-    #     # return jsonify({"status": "Error logging in"})
-    # else:
-    #     return jsonify({"status": "Error logging in"})
+    try :
+        data = request.get_json()
+        email = data["email"]
+        password = data["password"]
+        # print(email,password) 
+        access_token = create_access_token(identity=email)
+        exists = authenticate(email, password, access_token)
+        if exists:
+            return (exists)
+        else:
+            return jsonify({"status": "Error logging in"})
+    except:
+        return jsonify({"status": "Error logging in"})
 
 @app.post("/dashboard")
 # @cache.cached(timeout=cache_timeout) 
 # @jwt_required()
 def dashboard():
+    data = request.get_json()
+    access_token = data["access_token"]
+    payload = showData(access_token)
     # current_user = get_jwt_identity()
     # print(current_user)
-    # response = request.get_json()
-    # print(response)
-    # device_id = 2
-    # conn = sqlite3.connect('test.db')
-    # c = conn.cursor()
-    # Data = c.execute(
-    #     "SELECT * FROM DataLogging WHERE Device_Id = ? ORDER BY Time DESC limit 7", (device_id,)).fetchall()
-    # conn.close()
-    # print(type(Data))
-    # return jsonify(Data)
-    return jsonify(showData())
+    return jsonify(payload)
     # sensor_db = client.sensorDb
     # sensor_db_collection = sensor_db.sensor_db_collection
     # data = sensor_db_collection.find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(5)
@@ -88,9 +82,11 @@ def dashboard():
 def signUp():
     new_user = request.get_json()
     print(new_user)
+    email = new_user["email"]
+    access_token = create_access_token(identity=email)
     username = add_user(new_user)
-    send_mail(new_user["email"])
-    return jsonify({"Status" : "Verification pending", "username" : username})
+    # send_mail(new_user["email"])
+    return jsonify({"Status" : "Verification pending", "username" : username, "access_token" : access_token})
 
 @app.post("/changePass")
 @cache.cached(timeout=cache_timeout) 

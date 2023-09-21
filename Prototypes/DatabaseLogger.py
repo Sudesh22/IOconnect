@@ -35,15 +35,3 @@ client = MongoClient(connection_string)
 # print(data)
 
 # db.collection.find().limit(1).sort({$natural:-1}) 
-def showData():
-    sensor_db = client.sensorDb
-    sensor_db_collection = sensor_db.sensor_db_collection
-    data = sensor_db_collection.find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(7)
-    # print(type(data))
-    DataList = []
-    for d in data:
-        DataList.append(tuple(d.values()))
-        # print(tuple(d))
-
-    # print(type(DataList))
-    return DataList

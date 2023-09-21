@@ -26,10 +26,10 @@ export default function Signup({ onRouteChange, loadUser, baseUrl }) {
     })
       .then((response) => response.json())
       .then((user) => {
-        
+          localStorage.setItem("userProfile", (user.access_token));
           console.log(user)
           loadUser(user);
-          onRouteChange("verify");
+          onRouteChange("home");
         
       });
   }
