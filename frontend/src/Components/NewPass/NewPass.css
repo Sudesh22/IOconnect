@@ -1,0 +1,7 @@
+.form-control{
+color: white;
+font: 1em sans-serif;
+display: flex;
+align-items: flex-start;
+margin-bottom: 10px;
+}

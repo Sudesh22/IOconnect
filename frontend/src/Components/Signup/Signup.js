@@ -15,6 +15,7 @@ export default function Signup({ onRouteChange, loadUser, baseUrl }) {
     setSignUp((prev) => ({ ...prev, [name]: value }));
   }
   function onSubmitSignUp() {
+    if (signUp.signUpName!=="" & signUp.signUpEmail!=="" & signUp.signUpPassword!==""){
     fetch(`${baseUrl}/signup`, {
       method: "post",
       headers: { "Content-type": "application/json" },
@@ -32,6 +33,7 @@ export default function Signup({ onRouteChange, loadUser, baseUrl }) {
           onRouteChange("home");
         
       });
+    }
   }
 
   return (

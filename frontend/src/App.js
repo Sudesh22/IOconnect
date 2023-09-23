@@ -5,6 +5,7 @@ import Signup from "./Components/Signup/Signup";
 import Particle from "./Components/Particles/Particles";
 import Home from "./Components/Home/Home";
 import Verify from "./Components/Verify/Verify";
+import NewPass from "./Components/NewPass/NewPass";
 
 export default function App() {
     const baseUrl = "http://192.168.0.108:8081";
@@ -31,6 +32,15 @@ export default function App() {
   }
   return (
     <div className="app">
+      {state.route === "NewPass" ? (
+          <NewPass
+            onRouteChange={onRouteChange}
+            user={state.user}
+            loadUser={loadUser}
+            baseUrl={baseUrl}
+          />
+        ) : (
+          <div>
       {state.route === "verify" ? (
           <Verify
             onRouteChange={onRouteChange}
@@ -65,8 +75,10 @@ export default function App() {
           </div>
         )}
       </div>
-      )
-      }
+      )}
+      </div>
+        )
+    }
     </div>
   );
 }

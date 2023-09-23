@@ -6,103 +6,105 @@ export default function Verify({ onRouteChange, loadUser, baseUrl }) {
   //   const { name, value } = e.target;
   //   setVerify((prev) => ({ ...prev, [name]: value }));
   // }
+  let inputCount = 0, finalInput = "";
   function enableInput(){
+    const input = document.querySelectorAll(".input");
+    const inputField = document.querySelector(".inputfield");
+    const submitButton = document.getElementById("submit");
     //Initial references
-const input = document.querySelectorAll(".input");
-const inputField = document.querySelector(".inputfield");
-const submitButton = document.getElementById("submit");
-let inputCount = 0,
-  finalInput = "";
 
-//Update input
-const updateInputConfig = (element, disabledStatus) => {
-  element.disabled = disabledStatus;
-  if (!disabledStatus) {
-    element.focus();
-  } else {
-    element.blur();
-  }
-};
+    //Update input
+    const updateInputConfig = (element, disabledStatus) => {
+      element.disabled = disabledStatus;
+      if (!disabledStatus) {
+        element.focus();
+      } else {
+        element.blur();
+      }
+    };
 
-input.forEach((element) => {
-  element.addEventListener("keyup", (e) => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, "");
-    let { value } = e.target;
+    input.forEach((element) => {
+      element.addEventListener("keyup", (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, "");
+        let { value } = e.target;
 
-    if (value.length == 1) {
-      updateInputConfig(e.target, true);
-      if (inputCount <= 3 && e.key != "Backspace") {
-        finalInput += value;
-        if (inputCount < 3) {
-          updateInputConfig(e.target.nextElementSibling, false);
+        if (value.length == 1) {
+          updateInputConfig(e.target, true);
+          if (inputCount <= 3 && e.key != "Backspace") {
+            finalInput += value;
+            if (inputCount < 3) {
+              updateInputConfig(e.target.nextElementSibling, false);
+            }
+          }
+          inputCount += 1;
+        } else if (value.length == 0 && e.key == "Backspace") {
+          finalInput = finalInput.substring(0, finalInput.length - 1);
+          if (inputCount == 0) {
+            updateInputConfig(e.target, false);
+            return false;
+          }
+          updateInputConfig(e.target, true);
+          e.target.previousElementSibling.value = "";
+          updateInputConfig(e.target.previousElementSibling, false);
+          inputCount -= 1;
+        } else if (value.length > 1) {
+          e.target.value = value.split("")[0];
+        }
+        submitButton.classList.add("hide");
+      });
+    });
+
+    window.addEventListener("keyup", (e) => {
+      if (inputCount > 3) {
+        submitButton.classList.remove("hide");
+        submitButton.classList.add("show");
+        if (e.key == "Backspace") {
+          finalInput = finalInput.substring(0, finalInput.length - 1);
+          updateInputConfig(inputField.lastElementChild, false);
+          inputField.lastElementChild.value = "";
+          inputCount -= 1;
+          submitButton.classList.add("hide");
         }
       }
-      inputCount += 1;
-    } else if (value.length == 0 && e.key == "Backspace") {
-      finalInput = finalInput.substring(0, finalInput.length - 1);
-      if (inputCount == 0) {
-        updateInputConfig(e.target, false);
-        return false;
-      }
-      updateInputConfig(e.target, true);
-      e.target.previousElementSibling.value = "";
-      updateInputConfig(e.target.previousElementSibling, false);
-      inputCount -= 1;
-    } else if (value.length > 1) {
-      e.target.value = value.split("")[0];
-    }
-    submitButton.classList.add("hide");
-  });
-});
+    });
 
-window.addEventListener("keyup", (e) => {
-  if (inputCount > 3) {
-    submitButton.classList.remove("hide");
-    submitButton.classList.add("show");
-    if (e.key == "Backspace") {
-      finalInput = finalInput.substring(0, finalInput.length - 1);
-      updateInputConfig(inputField.lastElementChild, false);
-      inputField.lastElementChild.value = "";
-      inputCount -= 1;
-      submitButton.classList.add("hide");
-    }
-  }
-});
+    const validateOTP = () => {
+      alert("Success");
+    };
 
-const validateOTP = () => {
-  alert("Success");
-};
+    //Start
+    const startInput = () => {
+      inputCount = 0;
+      finalInput = "";
+      input.forEach((element) => {
+        element.value = "";
+      });
+      updateInputConfig(inputField.firstElementChild, false);
+    };
 
-//Start
-const startInput = () => {
-  inputCount = 0;
-  finalInput = "";
-  input.forEach((element) => {
-    element.value = "";
-  });
-  updateInputConfig(inputField.firstElementChild, false);
-};
-
-window.onload = startInput();
+    window.onload = startInput();
 
   }
 
   function onSubmitVerify() {
-    fetch(`${baseUrl}/verify`, {
-      method: "post",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        "jhg":"jhgf"
-      }),
-    })
-      .then((response) => response.json())
-      .then((user) => {
+    // fetch(`${baseUrl}/getOtp`, {
+    //   method: "post",
+    //   headers: { "Content-type": "application/json" },
+    //   body: JSON.stringify({
+    //     access_token: localStorage.getItem("userProfile"),
+    //     otp : finalInput,
+    //   }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((user) => {
         
-          console.log(user)
-          loadUser(user);
-          onRouteChange("Dashboard");
-        
-      });
+    //       console.log(user)
+    //       loadUser(user);
+    
+    
+    //   });
+    onRouteChange("NewPass");
+    console.log(finalInput);
   }
 
   return (
@@ -127,12 +129,12 @@ window.onload = startInput();
                 </label>
                 {/* <p class="msg">Please enter OTP to verify</p> */}
                 <div class="inputfield">
-                  <input type="number" maxlength="1" class="input"/>
-                  <input type="number" maxlength="1" class="input"/>
-                  <input type="number" maxlength="1" class="input"/>
-                  <input type="number" maxlength="1" class="input"/>
+                  <input id ="1" type="number" maxlength="1" class="input"/>
+                  <input id ="2" type="number" maxlength="1" class="input"/>
+                  <input id ="3" type="number" maxlength="1" class="input"/>
+                  <input id ="4" type="number" maxlength="1" class="input"/>
                 </div>
-                <button class="hide" id="submit" onclick="validateOTP()">Submit</button>
+                <button  class="hide" id="submit" onClick={onSubmitVerify}>Submit</button>
               </div>
               </div>
           </fieldset>

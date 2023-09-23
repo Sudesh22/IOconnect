@@ -18,6 +18,10 @@ def authenticate(email, passwd, access_token):
     # print(user) 
     print(user["password"])
     if user["password"] == passwd:
+        access_token_db = client.access_token_db
+        access_token_db_collection = access_token_db.access_token_db_collection
+        name = user["name"]
+        access_token_db_collection.update_one({"db_name":f"{name}"},{"$set":{"access_token":f"{access_token}"}})
         # msg = [user["name"], user["email"]]
         msg = {
             "status" : "Succesful",
@@ -31,12 +35,12 @@ def authenticate(email, passwd, access_token):
         print("False")
         return False
     
-def get_token(email):
-    user = user_creds_collection.find_one({"email": f"{email}"})
-    print(user)
-    return user["Verification Token"]
+# def get_token(email):
+#     user = user_creds_collection.find_one({"email": f"{email}"})
+#     print(user)
+#     return user["Verification Token"]
 
-def check_token(username,token):
-    user = user_creds_collection.find_one({"email": f"{email}"})
-    print(user)
-    return user["Verification Token"]
+# def check_token(username,token):
+#     user = user_creds_collection.find_one({"email": f"{email}"})
+#     print(user)
+#     return user["Verification Token"]

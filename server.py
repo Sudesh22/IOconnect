@@ -1,6 +1,6 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
-from logger import log_to_database, add_user, showData
-from authenticate import authenticate,check_token
+from logger import log_to_database, add_user, showData, checkOtp
+from authenticate import authenticate
 from verification import send_mail
 from flask import Flask, jsonify, request
 from datetime import datetime
@@ -84,18 +84,31 @@ def signUp():
     print(new_user)
     email = new_user["email"]
     access_token = create_access_token(identity=email)
-    username = add_user(new_user)
+    username = add_user(new_user,access_token)
     # send_mail(new_user["email"])
     return jsonify({"Status" : "Verification pending", "username" : username, "access_token" : access_token})
 
 @app.post("/changePass")
-@cache.cached(timeout=cache_timeout) 
+# @cache.cached(timeout=cache_timeout) 
 def verify():
     response = request.get_json()
     print(response)
     # check_token(response["name"],response["otp"])
-    send_mail(response["signUpEmail"])
+    send_mail(response["name"],response["signUpEmail"],"resetPass")
     return jsonify({"Status" : "Mail sent succesfully"})
+
+@app.post("/getOtp")
+def getOtp():
+    response = request.get_json()
+    print(response)
+    otp = response["otp"]
+    access_token = response["access_token"]
+    checkOtp(otp,access_token)
+    return "hugy"
+
+@app.post("/newPass")
+def newPas():
+    pass
 
 if __name__ == "__main__":
     app.debug=True
@@ -111,7 +124,7 @@ if __name__ == "__main__":
         out.writelines(lines)
         out.close()
 
-    add_ip("frontend/src/App.js", 9, "    const baseUrl = \"" + "http://" + str(IPAddr) + ":" + str(port) + "\";\n")
+    add_ip("frontend/src/App.js", 10, "    const baseUrl = \"" + "http://" + str(IPAddr) + ":" + str(port) + "\";\n")
     add_ip("frontend/package.json", 4, "  \"proxy\":\"" + "http://" + str(IPAddr) + ":" + str(port) + "\",\n")
     
     app.run(host=IPAddr, port=port)

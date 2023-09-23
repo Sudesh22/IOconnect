@@ -1,14 +1,14 @@
 export const data = [
   {
-    name: "Sudesh Manjerekar",
-    skill: "Backend Developer",
-    webLink: "sudeshmanjerekar.website",
+    name: "Sudesh Manjrekar",
+    skill: "Full Stack Developer",
+    webLink: "sudeshmanjrekar.website",
     img: "./sudesh.jpeg",
   },
   {
-    name: "Shripad Gaikawad",
+    name: "Shripad Gaikwad",
     skill: "Resource Engineer",
-    webLink: "shripadgaikawad.website",
+    webLink: "shripadgaikwad.website",
     img: "./shree.jpeg",
   },
   {
