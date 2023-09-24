@@ -14,8 +14,7 @@ export default function Settings({ onRouteChange, baseUrl }){
             method: "post",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
-                signUpEmail : "manjrekarsudesh15@gmail.com",
-                name : "SUDESH",
+                access_token : localStorage.getItem("userProfile")
             }),
           })
             .then((response) => response.json())

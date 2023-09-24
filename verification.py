@@ -2,7 +2,6 @@ import smtplib, os
 from email.mime.text import MIMEText
 from dotenv import load_dotenv, find_dotenv
 from email.mime.multipart import MIMEMultipart
-from random import randint
 from Mail import Mail
 
 load_dotenv(find_dotenv())
@@ -14,7 +13,6 @@ smtp_server = 'smtp.gmail.com'
 
 def send_mail(name,Receiver_Email,context,token=None):
     aes_password = os.environ.get("AES_PWD")
-    token = randint(1000,9999)
     try: 
         smtp = smtplib.SMTP(smtp_server, tls_Port) 
         smtp.starttls() 

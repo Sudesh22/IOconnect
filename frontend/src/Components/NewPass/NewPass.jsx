@@ -26,21 +26,21 @@ export default function NewPass({ onRouteChange, loadUser, baseUrl }) {
 
   function onSubmitNewPass() {
     if ((newPass.new_pass!=="") & (newPass.confirm_pass!=="") &(newPass.new_pass===newPass.confirm_pass)){
-    // fetch(`${baseUrl}/newPass`, {
-    //   method: "post",
-    //   headers: { "Content-type": "application/json" },
-    //   body: JSON.stringify({
-    //     password: sha256(setNewPass.confirm_pass),
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((user) => {
-    //   });
-    //   // console.log();
-    // }
-    onRouteChange("home");
+    fetch(`${baseUrl}/newPass`, {
+      method: "post",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        access_token : localStorage.getItem("userProfile"),
+        password: sha256(newPass.confirm_pass),
+      }),
+    })
+      .then((response) => response.json())
+      .then((user) => {
+        onRouteChange("home");
+      });
+      // console.log();
+    }
   }
-}
 
   return (
     <article

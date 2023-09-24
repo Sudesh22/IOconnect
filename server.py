@@ -1,11 +1,12 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
-from logger import log_to_database, add_user, showData, checkOtp
-from authenticate import authenticate
+from logger import log_to_database, add_user, showData, isValid, saveOtp, changePass
+from authenticate import authenticate, getUser
 from verification import send_mail
 from flask import Flask, jsonify, request
 from datetime import datetime
 from flask_cors import CORS
 from flask_caching import Cache 
+from random import randint
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -64,18 +65,7 @@ def dashboard():
     data = request.get_json()
     access_token = data["access_token"]
     payload = showData(access_token)
-    # current_user = get_jwt_identity()
-    # print(current_user)
     return jsonify(payload)
-    # sensor_db = client.sensorDb
-    # sensor_db_collection = sensor_db.sensor_db_collection
-    # data = sensor_db_collection.find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(5)
-    # print(type(data))
-    # DataList = []
-    # for d in data:
-    #     DataList.append(tuple(d.values()))
-    # print(DataList)
-    # return jsonify(DataList)
 
 @app.post("/signup")
 @cache.cached(timeout=cache_timeout) 
@@ -94,21 +84,30 @@ def verify():
     response = request.get_json()
     print(response)
     # check_token(response["name"],response["otp"])
-    send_mail(response["name"],response["signUpEmail"],"resetPass")
+    otp = randint(1000,9999)
+    access_token = response["access_token"]
+    name, email = getUser(access_token)
+    send_mail(name, email, "resetPass", otp)
+    saveOtp(access_token, otp)
     return jsonify({"Status" : "Mail sent succesfully"})
 
 @app.post("/getOtp")
 def getOtp():
     response = request.get_json()
     print(response)
-    otp = response["otp"]
     access_token = response["access_token"]
-    checkOtp(otp,access_token)
-    return "hugy"
+    otp = response["otp"]
+    if isValid(access_token, otp):
+        return jsonify({"Status" : "Success"})
+    else:
+        return jsonify({"Status" : "Failed"})
 
 @app.post("/newPass")
-def newPas():
-    pass
+def newPass():
+    response = request.get_json()
+    print(response)
+    changePass(response["access_token"],response["password"])
+    return jsonify({"Status" : "Password changed succeessfully"})
 
 if __name__ == "__main__":
     app.debug=True

@@ -87,23 +87,26 @@ export default function Verify({ onRouteChange, loadUser, baseUrl }) {
   }
 
   function onSubmitVerify() {
-    // fetch(`${baseUrl}/getOtp`, {
-    //   method: "post",
-    //   headers: { "Content-type": "application/json" },
-    //   body: JSON.stringify({
-    //     access_token: localStorage.getItem("userProfile"),
-    //     otp : finalInput,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((user) => {
-        
-    //       console.log(user)
-    //       loadUser(user);
-    
-    
-    //   });
-    onRouteChange("NewPass");
+    fetch(`${baseUrl}/getOtp`, {
+      method: "post",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        access_token: localStorage.getItem("userProfile"),
+        otp : finalInput,
+      }),
+    })
+      .then((response) => response.json())
+      .then((user) => {
+          console.log(user)
+          loadUser(user);
+          if (user.Status === "Success"){
+            onRouteChange("NewPass"); 
+          }
+          else{
+            console.log("otp expired!!")
+          }
+            
+      });
     console.log(finalInput);
   }
 
