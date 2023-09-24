@@ -26,7 +26,6 @@ export default function Settings({ onRouteChange, baseUrl }){
     return(
         <div className='setting-container'>
            <p>Settings</p> 
-
             <div className="change-pswd" onClick={changePass}>
                 <div className='title'>
                     <div className='icon'>
@@ -34,8 +33,6 @@ export default function Settings({ onRouteChange, baseUrl }){
                     <span > Change Password</span> 
                     </div>
                 </div>
-                
-                
             </div>
         </div>
     )

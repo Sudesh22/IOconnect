@@ -1,5 +1,5 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
-from logger import log_to_database, add_user, showData, isValid, saveOtp, changePass
+from logger import log_to_database, add_user, showData, isValid, saveOtp, changePass, showNotif, showConfig
 from authenticate import authenticate, getUser
 from verification import send_mail
 from flask import Flask, jsonify, request
@@ -107,7 +107,25 @@ def newPass():
     response = request.get_json()
     print(response)
     changePass(response["access_token"],response["password"])
+    name, email = getUser(response["access_token"])
+    send_mail(name, email, "resetSuccess")
     return jsonify({"Status" : "Password changed succeessfully"})
+
+@app.post("/notif")
+def notification():
+    response = request.get_json()
+    print(response)
+    access_token = response["access_token"]
+    notif_data = showNotif(access_token)
+    return jsonify(notif_data)
+
+@app.post("/config")
+def configuration():
+    response = request.get_json()
+    print(response)
+    access_token = response["access_token"]
+    config_data = showConfig(access_token)
+    return jsonify(config_data)
 
 if __name__ == "__main__":
     app.debug=True

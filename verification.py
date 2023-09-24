@@ -24,9 +24,9 @@ def send_mail(name,Receiver_Email,context,token=None):
         if context == "resetPass":
             content = Mail.changePassword["mailBody"].format(name=name,token=token)
             message["Subject"] = Mail.changePassword["subject"].format(token=token)
-        elif content == "resetSuccess":
-            content = Mail.passwordSuccess["mailBody"].format(name=name,token=token)
-            message["Subject"] = Mail.passwordSuccess["subject"].format(token=token)
+        elif context == "resetSuccess":
+            content = Mail.passwordSuccess["mailBody"].format(name=name)
+            message["Subject"] = Mail.passwordSuccess["subject"]
 
         message["From"] = Sender_Email
         message["To"] = Receiver_Email

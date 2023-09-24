@@ -4,6 +4,7 @@ import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as GoIcons from 'react-icons/go';
 import * as MdIcons from 'react-icons/md';
+import * as PiIcons from "react-icons/pi";
 
 export const SidebarData = [
   {
@@ -25,15 +26,21 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
+    title: 'Analytics',
+    path: '/analytics',
+    icon: <PiIcons.PiChartLineBold />,
+    cName: 'nav-text'
+  },
+  {
     title: 'Team',
     path: '/team',
     icon: <IoIcons.IoMdPeople />,
     cName: 'nav-text'
   },
   {
-    title: 'Notification',
+    title: 'Notifications',
     path: '/messages',
-    icon: <IoIcons.IoIosNotifications />,
+    icon: <PiIcons.PiBellRingingBold />,
     cName: 'nav-text'
   },
   {
