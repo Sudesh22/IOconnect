@@ -18,11 +18,7 @@ def encrypt_AES_CBC_256(key, message):
 
 # Set the 12-bit key and plaintext message
 key = '0123456789010123'
-message = """{"Device_Id": 1,
-              "Status" : "Working",
-              "Temp" : 45,
-              "Humi": 25,
-              "Time": "02/10/23 12:00"}"""
+message = "{\"Device_Id\":1,\"Status\":\"Working\",\"Temp\":45,\"Humi\":25,\"Time\":\"02/10/23 12:00\"}"
                
 
 # Encrypt the message
@@ -30,7 +26,8 @@ encrypted_message = encrypt_AES_CBC_256(key, message)
 
 # Create a hash of the data to check 
 # if the data is safely transferred
-hashed_string = hashlib.sha256(message.encode('utf-8')).hexdigest()
+hashed_string = hashlib.sha256(message.encode('ascii')).hexdigest()
+
 
 # Print the original and decrypted messages
 print('Encrypted Message:', encrypted_message)

@@ -1,5 +1,5 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
-from logger import log_to_database, add_user, showData, isValid, saveOtp, changePass, showNotif, showConfig
+from logger import log_to_database, log_alert, add_user, showData, isValid, saveOtp, changePass, showNotif, showConfig
 from authenticate import authenticate, getUser
 from verification import send_mail
 from flask import Flask, jsonify, request
@@ -34,6 +34,15 @@ def home():
 @app.post("/getDevices")
 def devices():
     Json = request.get_json()
+
+@app.post("/distress")
+def alert():
+    Json = request.get_json()
+    print(Json)
+    device_id = Json["Device_Id"]
+    log_alert(device_id)
+    return jsonify({"status" : "logged"})
+    # send_mail()
 
 @app.post("/decode")
 def decode():

@@ -11,6 +11,26 @@ connection_string = f"mongodb+srv://Group1:{password}@testdb.dhmeogy.mongodb.net
 
 client = MongoClient(connection_string)
 
+def log_alert(Device_Id):
+    devices_db = client.devices_db
+    devices_db_collection = devices_db.devices_db_collection
+    entry = devices_db_collection.find_one({"device_id": Device_Id})
+    print(entry)
+    db_name = str(entry["username"])
+    db_collection = db_name+"@notif"
+    db = client[db_name]
+    now = datetime.strptime(datetime.now().strftime("%d/%m/%Y, %H:%M:%S"),"%d/%m/%Y, %H:%M:%S")
+    data = {
+            "company"     : entry["company_name"],
+            "device_id"   : Device_Id,
+            "description" : "The box was tampered with",
+            "headline"    : "Box Tampered!!!",
+            "read"        : False,
+            "timestamp"   : now,
+           }
+    db.get_collection(db_collection).insert_one(data).inserted_id
+    return ("Data inserted with id:")
+
 def log_to_database(data, Json):
     devices_db = client.devices_db
     devices_db_collection = devices_db.devices_db_collection
@@ -19,7 +39,7 @@ def log_to_database(data, Json):
     db_name = str(entry["username"])
     db_collection = db_name+"@dash"
     db = client[db_name]
-    data = db.get_collection(db_collection).insert_one(data).inserted_id
+    db.get_collection(db_collection).insert_one(data).inserted_id
     return ("Data inserted with id:")
 
 def add_user(data,access_token):
