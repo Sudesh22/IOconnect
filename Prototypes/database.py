@@ -14,14 +14,14 @@ dbs = client.list_database_names()
 test_db = client.test
 collections = test_db.list_collection_names()
 
-def insert_test_doc():
-    collection = test_db.test
-    test_document = {
-        "name" : "Sudesh",
-        "type" : "Test"
-    }
-    inserted_id = collection.insert_one(test_document).inserted_id
-    print(inserted_id)
+# def insert_test_doc():
+collection = test_db.test
+test_document = {
+    "name" : "Sudesh",
+    "type" : "Test"
+}
+inserted_id = collection.insert_one(test_document).inserted_id
+print(inserted_id)
 
 # insert_test_doc()
 production = client.production

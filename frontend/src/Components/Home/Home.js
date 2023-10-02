@@ -6,6 +6,7 @@ import Team from "./Teams/Team";
 import HomeContent from "./HomeContent/HomeContent";
 import Notification from "./Notification/Notification";
 import Settings from "./Settings/Settings";
+import Analytics from "./Analytics/Analytics"
 
 export default function Home({ onRouteChange, user, baseUrl }) {
   const [internalroute, setInternalRoute] = React.useState("Dashboard");
@@ -28,6 +29,8 @@ export default function Home({ onRouteChange, user, baseUrl }) {
               />;
     } else if (internalroute === "Notification") {
       return <Notification />;
+    } else if (internalroute === "Analytics") {
+      return <Analytics />;
     }
   }
   return (

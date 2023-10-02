@@ -7,6 +7,7 @@ from datetime import datetime
 from flask_cors import CORS
 from flask_caching import Cache 
 from random import randint
+from dotenv import load_dotenv, find_dotenv
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -14,6 +15,8 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
 import socket, ast, csv, os, sqlite3
+
+load_dotenv(find_dotenv())
 
 app = Flask(__name__)
 CORS(app)
@@ -28,15 +31,21 @@ cache_timeout = 60
 def home():
     return ("<h1>Hello</h1>")
 
+@app.post("/getDevices")
+def devices():
+    Json = request.get_json()
+
 @app.post("/decode")
 def decode():
     Json = request.get_json()
     encrypted = Json["encrypted"]
     hash = Json["hash"]
-    decrypted = decrypt_AES_CBC_256("0123456789010123", encrypted)
+    encryption_key = os.environ.get("AES_KEY")
+    decrypted = decrypt_AES_CBC_256(encryption_key, encrypted)
     if verify_hash(decrypted,hash):
         data = ast.literal_eval(decrypted)
-        log_to_database(Json)
+        print(data)
+        log_to_database(data,Json)
         return jsonify({"status":"received"})
     else:
         return jsonify({"status":"Data compromised not saved to db"})

@@ -11,12 +11,16 @@ connection_string = f"mongodb+srv://Group1:{password}@testdb.dhmeogy.mongodb.net
 
 client = MongoClient(connection_string)
 
-
-def log_to_database(data):
-    encrypted_db = client.encrypted
-    encrypted_collection = encrypted_db.encrypted_collection
-    inserted_id = encrypted_collection.insert_one(data).inserted_id
-    return ("Data inserted with id:", inserted_id)
+def log_to_database(data, Json):
+    devices_db = client.devices_db
+    devices_db_collection = devices_db.devices_db_collection
+    entry = devices_db_collection.find_one({"device_id": data['Device_Id']})
+    print(entry)
+    db_name = str(entry["username"])
+    db_collection = db_name+"@dash"
+    db = client[db_name]
+    data = db.get_collection(db_collection).insert_one(data).inserted_id
+    return ("Data inserted with id:")
 
 def add_user(data,access_token):
     user_creds = client.user_creds
@@ -126,3 +130,14 @@ def showConfig(access_token):
     db = client[db_name]
     data = db.get_collection(notif_db).find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(1)
     return data
+
+def dev_db():
+    devices_db = client.devices_db
+    devices_db_collection = devices_db.devices_db_collection
+    data = {"device_id"          :    1 ,
+            "microcontroller"    :    "STM32",
+            "sensors_used"       :    {"temp" : "PT100"},
+            "username"           :    "SUDESH",
+            "company_name"       :    "Vedantrik",
+           } 
+    inserted_id = devices_db_collection.insert_one(data).inserted_id

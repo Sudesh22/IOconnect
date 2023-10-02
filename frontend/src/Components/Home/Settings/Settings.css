@@ -3,6 +3,10 @@
   font-size: 1.5rem;
 }
 
+.holder{
+  margin-bottom: 10px;
+}
+
 /* .change-pswd {
   color: white;
   font-size: 1.2rem;
@@ -13,17 +17,17 @@
   display: flex;
 } */
 
-.change-pswd {
+.option {
   display: flex;
   flex-direction: column;
   font-size: 1.2rem;
   /* color: grey; */
-  background-color: #272727;
+  /* background-color: #272727; */
   border-radius: 10px;
   background-color: #0000004a;
   padding: 15px 15px 15px 15px;
 }
-.change-pswd .title {
+.option .title {
   display: flex;
   align-items: center;
   justify-content: left;
@@ -31,5 +35,5 @@
   /* margin-left: 20px; */
 }
 .sidebar .title .icon {
-  width: 60px;
+  width: 90px; 
 }
