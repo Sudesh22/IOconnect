@@ -29,11 +29,18 @@ cache_timeout = 60
 
 @app.get("/")
 def home():
-    return ("<h1>Hello</h1>")
+    json = request.get_json()
+    print(json)
+    return jsonify({"status" : "logged"})
 
-@app.post("/getDevices")
-def devices():
-    Json = request.get_json()
+@app.post("/check")
+def homepost():
+    json = request.get_json()
+    print(json)
+    # print(json["encrypted"])
+    encryption_key = os.environ.get("AES_KEY")
+    print(decrypt_AES_CBC_256(encryption_key, str(json["encrypted"])))
+    return jsonify({"status" : "logged"})
 
 @app.post("/distress")
 def alert():

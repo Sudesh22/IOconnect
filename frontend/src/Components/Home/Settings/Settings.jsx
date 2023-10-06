@@ -25,7 +25,7 @@ export default function Settings({ onRouteChange, baseUrl }){
       }
 
       function getDevices(e) {
-        fetch(`${baseUrl}/getDevices`, {
+        fetch(`${baseUrl}/team`, {
             method: "post",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({

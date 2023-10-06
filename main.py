@@ -26,7 +26,7 @@ encrypted_message = encrypt_AES_CBC_256(key, message)
 
 # Create a hash of the data to check 
 # if the data is safely transferred
-hashed_string = hashlib.sha256(message.encode('ascii')).hexdigest()
+hashed_string = hashlib.sha256(message.encode('utf-8')).hexdigest()
 
 
 # Print the original and decrypted messages

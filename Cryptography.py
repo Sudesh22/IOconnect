@@ -24,3 +24,6 @@ def verify_hash(decrypted,hash):
     else:
         print("Security Status: Data is tampered with!!")
         return False
+
+# text = decrypt_AES_CBC_256("0000000000000000", "WTaZQrgOPjp6TgUw/RogmjsLmI/1qUVxwE7LWkldP2kOYjp1ngPZKMO8Hu5qE+M62iL/3PxAijfkTK3qbdAyjmFaUnTjxcREA/w8IrodilQ=")
+# print(text)
