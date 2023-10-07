@@ -2,7 +2,7 @@
 Our Final Year Project on IIoT (Industry 4.0)
 
 ## MCU Used
-- TBA
+- STM32F446RE
 
 ## Sensors Used
 - TBA

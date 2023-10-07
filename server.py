@@ -30,16 +30,6 @@ cache_timeout = 60
 @app.get("/")
 def home():
     json = request.get_json()
-    print(json)
-    return jsonify({"status" : "logged"})
-
-@app.post("/check")
-def homepost():
-    json = request.get_json()
-    print(json)
-    # print(json["encrypted"])
-    encryption_key = os.environ.get("AES_KEY")
-    print(decrypt_AES_CBC_256(encryption_key, str(json["encrypted"])))
     return jsonify({"status" : "logged"})
 
 @app.post("/distress")
@@ -55,16 +45,16 @@ def alert():
 def decode():
     Json = request.get_json()
     encrypted = Json["encrypted"]
-    hash = Json["hash"]
+    # hash = Json["hash"]
     encryption_key = os.environ.get("AES_KEY")
     decrypted = decrypt_AES_CBC_256(encryption_key, encrypted)
-    if verify_hash(decrypted,hash):
-        data = ast.literal_eval(decrypted)
-        print(data)
-        log_to_database(data,Json)
-        return jsonify({"status":"received"})
-    else:
-        return jsonify({"status":"Data compromised not saved to db"})
+    # if verify_hash(decrypted,hash):
+    data = ast.literal_eval(str(decrypted))
+    print(data)
+    log_to_database(data,Json)
+    return jsonify({"status":"received"})
+    # else:
+    #     return jsonify({"status":"Data compromised not saved to db"})
     
 @app.post("/signin")
 # @cache.cached(timeout=cache_timeout) 
