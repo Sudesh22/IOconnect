@@ -8,7 +8,7 @@ import Verify from "./Components/Verify/Verify";
 import NewPass from "./Components/NewPass/NewPass";
 
 export default function App() {
-    const baseUrl = "http://192.168.0.106:8081";
+    const baseUrl = "http://192.168.137.253:8081";
 
   const [state, setState] = React.useState({
     route: "signin",

@@ -34,7 +34,7 @@ def log_alert(Device_Id):
 def log_to_database(data, Json):
     devices_db = client.devices_db
     devices_db_collection = devices_db.devices_db_collection
-    entry = devices_db_collection.find_one({"device_id": data['Device_Id']})
+    entry = devices_db_collection.find_one()
     print(entry)
     db_name = str(entry["username"])
     db_collection = db_name+"@dash"

@@ -27,9 +27,10 @@ jwt = JWTManager(app)
 cache=Cache(app,config={'CACHE_TYPE': 'simple'})
 cache_timeout = 60
 
-@app.get("/")
+@app.post("/")
 def home():
     json = request.get_json()
+    print(json)
     return jsonify({"status" : "logged"})
 
 @app.post("/distress")
@@ -106,7 +107,8 @@ def verify():
     saveOtp(access_token, otp)
     return jsonify({"Status" : "Mail sent succesfully"})
 
-@app.post("/getOtp")
+@app.post("/getOtp") 
+
 def getOtp():
     response = request.get_json()
     print(response)
@@ -118,7 +120,7 @@ def getOtp():
         return jsonify({"Status" : "Failed"})
 
 @app.post("/newPass")
-def newPass():
+def newPass(): 
     response = request.get_json()
     print(response)
     changePass(response["access_token"],response["password"])
