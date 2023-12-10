@@ -10,7 +10,8 @@
   padding: 3px;
 }
 .sidebar .title .logo {
-  width: 60px;
+  padding: 12px;
+  width: 310px;
 }
 .sidebar .title .name {
   font-size: 1.6rem;

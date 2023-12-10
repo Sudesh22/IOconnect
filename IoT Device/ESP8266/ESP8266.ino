@@ -2,7 +2,7 @@
 #include <ESP8266HTTPClient.h>
 #include <LiquidCrystal_I2C.h>
 
-#define SERVER_IP "192.168.137.253:8081"
+#define SERVER_IP "192.168.0.107:8081"
 
 #ifndef STASSID
 #define STASSID "Manjrekar"
@@ -22,9 +22,7 @@ void setup() {
   
   WiFi.begin(STASSID, STAPSK);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-  }
+  
 
   lcd.clear();
   lcd.setCursor(3, 0);
@@ -40,6 +38,9 @@ void setup() {
   lcd.setCursor(4, 1);
   lcd.print("Network");
 
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
   delay(1000);
 }
 
@@ -84,7 +85,7 @@ void loop() {
 
       Serial.print("[HTTP] begin...\n");
       // configure traged server and url
-      http.begin(client, "http://" SERVER_IP "/decode");  // HTTP
+      http.begin(client, "https://" SERVER_IP "/decode");  // HTTP
       http.addHeader("Content-Type", "application/json");
   
       Serial.print("[HTTP] POST...\n");

@@ -30,7 +30,7 @@ export default function Home({ onRouteChange, user, baseUrl }) {
     } else if (internalroute === "Notification") {
       return <Notification />;
     } else if (internalroute === "Analytics") {
-      return <Analytics />;
+      return <Analytics baseUrl={baseUrl}/>;
     }
   }
   return (

@@ -1,6 +1,6 @@
 .all-graph {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
   grid-gap: 20px;
 }
 .dashboard-status {
@@ -13,4 +13,8 @@
 .dashboard {
   color: white;
   font-size: 1.5rem;
+}
+.text{
+  color: white;
+  height: 0px;
 }

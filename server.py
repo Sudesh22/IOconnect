@@ -1,5 +1,6 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
-from logger import log_to_database, log_alert, add_user, showData, isValid, saveOtp, changePass, showNotif, showConfig
+from logger import log_to_database, log_alert, add_user, showData, isValid, saveOtp, changePass, showNotif, showConfig, showAnalysis
+from Analytics.Vedantrik.Linear_Regression.linear_regression import linear_regression
 from authenticate import authenticate, getUser
 from verification import send_mail
 from flask import Flask, jsonify, request
@@ -83,6 +84,16 @@ def dashboard():
     payload = showData(access_token)
     return jsonify(payload)
 
+@app.post("/analysis")
+# @cache.cached(timeout=cache_timeout) 
+# @jwt_required()
+def analysis():
+    data = request.get_json()
+    access_token = data["access_token"]
+    time_frame = data["timeframe"]
+    payload = showAnalysis(access_token,time_frame)
+    return jsonify(payload)
+
 @app.post("/signup")
 @cache.cached(timeout=cache_timeout) 
 def signUp():
@@ -158,7 +169,7 @@ if __name__ == "__main__":
         out.writelines(lines)
         out.close()
 
-    add_ip("frontend/src/App.js", 10, "    const baseUrl = \"" + "http://" + str(IPAddr) + ":" + str(port) + "\";\n")
+    # add_ip("frontend/src/App.js", 10, "    const baseUrl = \"" + "http://" + str(IPAddr) + ":" + str(port) + "\";\n")
     add_ip("frontend/package.json", 4, "  \"proxy\":\"" + "http://" + str(IPAddr) + ":" + str(port) + "\",\n")
     
     app.run(host=IPAddr, port=port)

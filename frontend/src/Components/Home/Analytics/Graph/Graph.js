@@ -44,19 +44,24 @@ function getYAxisData(condition, chartData) {
   return data;
 }
 
-function splitDateTime(dateTime) {
-  return dateTime.split(" ");
-  //   dateTime.split(/(\s+)/)
-}
-function getXAxisData(chartData) {
-  const timeOnlyArray = chartData.Time.map((time) => {
-    const timeParts = splitDateTime(time);
-    return timeParts[1]; // Extracting the time part
-  });
+// function splitDateTime(dateTime) {
+//   return dateTime.split(" ");
+//   //   dateTime.split(/(\s+)/)
+// }
+function getXAxisData(chartData,timeframe) {
+  var timeOnlyArray;
+  console.log(timeframe)
+  if (timeframe==="Weekly"){
+
+    timeOnlyArray = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+  }
+  if (timeframe === "Monthly"){
+    timeOnlyArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+  }
   return timeOnlyArray;
 }
-const Graph = ({ condition, chartData }) => {
-  const x_axis = getXAxisData(chartData);
+const Graph = ({ condition, chartData, timeframe }) => {
+  const x_axis = getXAxisData(chartData,timeframe);
   const y_axis = getYAxisData(condition, chartData);
 
   var data = {
@@ -76,8 +81,56 @@ const Graph = ({ condition, chartData }) => {
           `${getClassName(condition)}`,
           `${getClassName(condition)}`,
           `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
         ],
         borderColor: [
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
+          `${getClassName(condition)}`,
           `${getClassName(condition)}`,
           `${getClassName(condition)}`,
           `${getClassName(condition)}`,

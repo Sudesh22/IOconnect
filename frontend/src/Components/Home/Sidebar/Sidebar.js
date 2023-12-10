@@ -13,9 +13,8 @@ export default function Sidebar({ onRouteChange, onInternalRouteChange }) {
     <div className="sidebar">
       <div className="title">
         <div className="logo">
-          <img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="logo" />
+          <img className="logoimg" src={`${process.env.PUBLIC_URL}/images/ioconnect.png`} alt="logo" />
         </div>
-        <p className="name">IOconnect</p>
       </div>
       {SidebarData.map((item, index) => {
         return (

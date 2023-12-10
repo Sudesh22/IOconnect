@@ -7,9 +7,17 @@ export default function Guage({ condition, parameter }) {
   //   ["Label", "Value"],
   //   [condition, parameter],
   // ];
+  let unit = ''
+  if (condition === "Temperature") {
+    unit = '°C'        
+  }
+  else{
+    unit = ''
+  }
+
   const chartStyle = {
     height: 100,
-    width: 200,
+    width: 250,
   };
   const perc = parameter / 100;
   return (
@@ -29,15 +37,18 @@ export default function Guage({ condition, parameter }) {
         }}
         rootProps={{ "data-testid": "1" }}
       /> */}
+
+      
+
       <GaugeChart
-        id="gauge-chart5"
-        style={chartStyle}
-        nrOfLevels={420}
-        arcsLength={[0.3, 0.5, 0.2]}
-        colors={["#5BE12C", "#F5CD19", "#EA4228"]}
-        percent={perc}
-        arcPadding={0.02}
-      />
+              id="gauge-chart8"
+              style={chartStyle}
+              nrOfLevels={30}
+              colors={['#5BE12C', '#F5CD19', '#EA4228']}
+              arcWidth={0.3}
+              percent={perc}
+              formatTextValue={value => value + unit}
+            />
     </div>
   );
 }

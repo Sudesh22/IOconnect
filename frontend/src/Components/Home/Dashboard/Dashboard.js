@@ -31,6 +31,9 @@ export default function Dashboard({ baseUrl }) {
         const temperature = data.map((data) => data[2]);
         const humidity = data.map((data) => data[3]);
         const Time = data.map((data) => data[4]);
+        
+
+
         setChartData({
           deviceStatus: deviceStatus,
           humidity: humidity,
@@ -62,13 +65,29 @@ export default function Dashboard({ baseUrl }) {
         </div>
       </div>
       <div className="all-graph">
-        <Graph condition={"Temperature"} chartData={chartData} />
-        <Graph condition={"Humidity"} chartData={chartData} />
         <Guage
-          condition={"Temperature℃"}
+          condition={"Temperature"}
           parameter={chartData.temperature[6]}
         />
         <Guage condition={"Humidity"} parameter={chartData.humidity[6]} />
+        <Graph condition={"Temperature"} chartData={chartData} />
+        <Graph condition={"Humidity"} chartData={chartData} />
+        <p className="text" >Average Temperature: {(parseInt(chartData.temperature[0])+parseInt(chartData.temperature[1])+parseInt(chartData.temperature[2])+parseInt(chartData.temperature[3])+parseInt(chartData.temperature[4])+parseInt(chartData.temperature[5])+parseInt(chartData.temperature[6]))/7}</p>
+        <p className="text" >Average Humidity: {(parseInt(chartData.humidity[0])+parseInt(chartData.humidity[1])+parseInt(chartData.humidity[2])+parseInt(chartData.humidity[3])+parseInt(chartData.humidity[4])+parseInt(chartData.humidity[5])+parseInt(chartData.humidity[6]))/7}</p>
+        <p className="text" >Last 5 Readings: </p>
+        <p className="text" >Last 5 Readings: </p>
+        <p className="text" >{chartData.temperature[0]}</p>
+        <p className="text" >{chartData.humidity[0]}</p>
+        <p className="text" >{chartData.temperature[1]}</p>
+        <p className="text" >{chartData.humidity[1]}</p>
+        <p className="text" >{chartData.temperature[2]}</p>
+        <p className="text" >{chartData.humidity[2]}</p>
+        <p className="text" >{chartData.temperature[3]}</p>
+        <p className="text" >{chartData.humidity[3]}</p>
+        <p className="text" >{chartData.temperature[4]}</p>
+        <p className="text" >{chartData.humidity[4]}</p>
+        
+
       </div>
     </div>
   );

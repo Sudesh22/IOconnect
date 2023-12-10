@@ -2,3 +2,26 @@
   color: white;
   font-size: 1.5rem;
 }
+
+.all-contents {
+  display: grid;
+  grid-template-columns: repeat(2,90px);
+  grid-gap: 20px;
+  margin-left: 20px;
+  margin-top: 25px;
+}
+
+.bg-text {
+  width: 90px;
+  height: 90px;
+  background-color: #0d0d0d;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.info{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4%, 1fr));
+  grid-gap: 10px;
+  color: white;
+}
