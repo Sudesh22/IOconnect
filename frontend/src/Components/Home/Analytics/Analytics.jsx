@@ -89,51 +89,51 @@ export default function Analytics({ baseUrl }) {
     }
     setChartData((prev) => ({
       ...prev,
-      valuee : value,
-      textt : text,
+      valuee: value,
+      textt: text,
     }));
   }
 
   const [chartData, setChartData] = React.useState({
     temperature: [],
-    valuee : 1,
+    valuee: 1,
     textt: "Daily",
   });
   // console.log(localStorage.getItem("userProfile"))
 
   // fetching the chart data
-  function fetchData(value){
-          var timeframe = setInputValue(value)
-          fetch(`${baseUrl}/analysis`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            access_token: localStorage.getItem("userProfile"),
-            timeframe : timeframe,
-          }),
-        })
-        .then((response) => response.json())
-        .then(responsee => {
-          console.log(responsee);
-          setChartData((prev) => ({
-            ...prev,
-            temperature: responsee,
-            valuee: value,
-            textt : timeframe,
-          }));
-        })
-      
-    }
-    // Fetch data initially
-    // fetchData("Daily");
+  function fetchData(value) {
+    var timeframe = setInputValue(value)
+    fetch(`${baseUrl}/analysis`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        access_token: localStorage.getItem("userProfile"),
+        timeframe: timeframe,
+      }),
+    })
+      .then((response) => response.json())
+      .then(responsee => {
+        console.log(responsee);
+        setChartData((prev) => ({
+          ...prev,
+          temperature: responsee,
+          valuee: value,
+          textt: timeframe,
+        }));
+      })
 
-    // Fetch data every second
-    // const intervalId = setInterval(fetchData, 5000);
+  }
+  // Fetch data initially
+  // fetchData("Daily");
 
-    // Cleaning interval when the component unmounts
-    
+  // Fetch data every second
+  // const intervalId = setInterval(fetchData, 5000);
+
+  // Cleaning interval when the component unmounts
+
 
   return (
     <div className='analytics-container'>
@@ -144,11 +144,11 @@ export default function Analytics({ baseUrl }) {
       </div>
       <div className="analytics-container">
         <br />
-        <Graph condition={"Temperature"} chartData={chartData} timeframe={chartData.textt}/>
+        <Graph condition={"Temperature"} chartData={chartData} timeframe={chartData.textt} />
         <p className="filter">Time Frame</p>
         <IOSSlider
           sx={{
-            width:200,
+            width: 200,
           }}
           className='slider'
           aria-label="ios slider"
@@ -161,7 +161,7 @@ export default function Analytics({ baseUrl }) {
           min={1}
           max={3}
           onChange={(_, value) => setInputValue(value)}
-          onChangeCommitted={(event,value) => fetchData(value)}
+          onChangeCommitted={(event, value) => fetchData(value)}
         />
       </div>
     </div>

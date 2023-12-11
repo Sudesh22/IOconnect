@@ -1,5 +1,5 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
-from logger import log_to_database, log_alert, add_user, showData, isValid, saveOtp, changePass, showNotif, showConfig, showAnalysis
+from logger import log_to_database, log_alert, add_user, showData, isValid, saveOtp, changePass, showNotif, showConfig, showAnalysis, showHome
 from Analytics.Vedantrik.Linear_Regression.linear_regression import linear_regression
 from authenticate import authenticate, getUser
 from verification import send_mail
@@ -29,10 +29,19 @@ cache=Cache(app,config={'CACHE_TYPE': 'simple'})
 cache_timeout = 60
 
 @app.post("/")
-def home():
+def Home():
     json = request.get_json()
     print(json)
     return jsonify({"status" : "logged"})
+
+@app.post("/home")
+# @cache.cached(timeout=cache_timeout) 
+# @jwt_required()
+def home():
+    data = request.get_json()
+    access_token = data["access_token"]
+    payload = showHome(access_token)
+    return jsonify(payload)
 
 @app.post("/distress")
 def alert():
@@ -119,7 +128,6 @@ def verify():
     return jsonify({"Status" : "Mail sent succesfully"})
 
 @app.post("/getOtp") 
-
 def getOtp():
     response = request.get_json()
     print(response)
@@ -142,7 +150,6 @@ def newPass():
 @app.post("/notif")
 def notification():
     response = request.get_json()
-    print(response)
     access_token = response["access_token"]
     notif_data = showNotif(access_token)
     return jsonify(notif_data)

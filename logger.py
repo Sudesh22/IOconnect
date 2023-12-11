@@ -102,6 +102,23 @@ def showData(access_token):
     # print(type(DataList))
     return DataList
 
+def showHome(access_token):
+    access_token_db = client.access_token_db
+    access_token_db_collection = access_token_db.access_token_db_collection
+    entry = access_token_db_collection.find_one({"access_token": f"{access_token}"})
+    db_name = entry["db_name"]
+    db_collection = entry["dash_collection"]
+    db = client[db_name]
+    data = db.get_collection(db_collection).find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(7)
+    # print(type(data))
+    DataList = []
+    for d in data:
+        DataList.append(tuple(d.values()))
+        # print(tuple(d))
+
+    # print(type(DataList))
+    return DataList
+
 def showAnalysis(access_token,time_frame):
     access_token_db = client.access_token_db
     access_token_db_collection = access_token_db.access_token_db_collection
@@ -114,6 +131,8 @@ def showAnalysis(access_token,time_frame):
     if time_frame == "Weekly":
         data = db.get_collection(db_collection).find({"Start":datetime.strptime(str(date+'/12/2023'),'%d/%m/%Y'),"End": datetime.strptime(str(date+'/12/2023'),'%d/%m/%Y') + timedelta(days=6)},{"_id" : 0,"Start":0,"End":0,"Averages":0})
     elif time_frame == "Monthly":
+        data = db.get_collection(db_collection).find({"Start":datetime.strptime(str('01/12/2023'),'%d/%m/%Y'),"End": datetime.strptime(str('01/12/2023'),'%d/%m/%Y') + timedelta(days=30)},{"_id" : 0,"Start":0,"End":0,"Averages":0})
+    elif time_frame == "Yearly":
         data = db.get_collection(db_collection).find({"Start":datetime.strptime(str('01/12/2023'),'%d/%m/%Y'),"End": datetime.strptime(str('01/12/2023'),'%d/%m/%Y') + timedelta(days=30)},{"_id" : 0,"Start":0,"End":0,"Averages":0})
     # print(type(data))
     print(time_frame)
@@ -161,8 +180,13 @@ def showNotif(access_token):
     db_name = entry["db_name"]
     notif_db = entry["notif_collection"]
     db = client[db_name]
-    data = db.get_collection(notif_db).find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(10)
-    return data
+    data = db.get_collection(notif_db).find({},{"_id" : 0,"company":0,"device_id":0})
+    DataList = []
+    for d in data:
+        DataList.append(tuple(d.values()))
+        # print(tuple(d))
+    print(DataList)
+    return DataList
 
 def showConfig(access_token):
     access_token_db = client.access_token_db

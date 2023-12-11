@@ -27,8 +27,8 @@ export default function Home({ onRouteChange, user, baseUrl }) {
                 onRouteChange={onRouteChange} 
                 baseUrl={baseUrl}
               />;
-    } else if (internalroute === "Notification") {
-      return <Notification />;
+    } else if (internalroute === "Notifications") {
+      return <Notification baseUrl={baseUrl}/>;
     } else if (internalroute === "Analytics") {
       return <Analytics baseUrl={baseUrl}/>;
     }

@@ -39,7 +39,7 @@ export const SidebarData = [
   },
   {
     title: 'Notifications',
-    path: '/messages',
+    path: '/notification',
     icon: <PiIcons.PiBellRingingBold />,
     cName: 'nav-text'
   },
