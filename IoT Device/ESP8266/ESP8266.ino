@@ -2,7 +2,7 @@
 #include <ESP8266HTTPClient.h>
 #include <LiquidCrystal_I2C.h>
 
-#define SERVER_IP "192.168.0.107:8081"
+#define SERVER_IP "physically-secure-condor.ngrok-free.app"
 
 #ifndef STASSID
 #define STASSID "Manjrekar"

@@ -26,9 +26,9 @@ ChartJS.register(
 
 function getClassName(condition) {
   let className = "";
-  if (condition === "Temperature") {
+  if (condition === "Temperature1") {
     className = "red";
-  } else if (condition === "Humidity") {
+  } else if (condition === "Temperature2") {
     className = "green";
   }
   return className;
@@ -36,9 +36,9 @@ function getClassName(condition) {
 
 function getYAxisData(condition, chartData) {
   let data = "";
-  if (condition === "Temperature") {
+  if (condition === "Temperature1") {
     data = chartData.temperature;
-  } else if (condition === "Humidity") {
+  } else if (condition === "Temperature2") {
     data = chartData.humidity;
   }
   return data;

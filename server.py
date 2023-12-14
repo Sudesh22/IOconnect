@@ -28,7 +28,7 @@ jwt = JWTManager(app)
 cache=Cache(app,config={'CACHE_TYPE': 'simple'})
 cache_timeout = 60
 
-@app.post("/")
+@app.get("/")
 def Home():
     json = request.get_json()
     print(json)

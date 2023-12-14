@@ -1,13 +1,11 @@
 # IOconnect
-Final Year Project on IIoT (Industry 4.0), developed using STM32. The motive of this project is to develop a safe and secure IoT network, thereby ensuring data integrity between the communication of IoT devices. We also aim to eliminate the need IoT Gateways by utilizing the technical advancements of the modern microcontrollers.
+Final Year Project on IIoT (Industry 4.0), developed using STM32. This project aims to develop a safe and secure IoT network, thereby ensuring data integrity between the communication of IoT devices. To eliminate the need IoT Gateways by utilizing the technical advancements of the modern microcontrollers and to provide a clean UI with Real-time analysis and predictive analysis.  
 
 ## Problem Statement
 Design and implement a comprehensive Industrial Internet of Things (IIoT) 4.0 solution for optimizing manufacturing processes and enhancing operational efficiency in a smart factory environment.
 
-## Limitations of the Existing system
-Many existing IoT systems lack robust security measures, relying on basic encryption and authentication methods. This inadequacy leaves them vulnerable to sophisticated attacks, including intrusion, data breaches, and device manipulation. IoT networks consist of a wide array of devices, each with unique specifications and communication protocols. Existing solutions often struggle to provide uniform security across this diverse ecosystem, leading to vulnerabilities in certain devices or communication channels, that are prone to vulnerabilities such as hacking. Also to keep up with the upcoming trend of Machine Learning and use its potential for Growth estimation and to increase the efficiency of existing systems.
-
 ## Working
+
 It sends sensor data to Raspberry Pi based Server by Encrypting
 with AES-256 encryption algorithm. The Verifies data integrity with SHA-256 generated hash.
 Real-time monitoring on dashboard and prediction of comapny
