@@ -44,3 +44,5 @@ def send_mail(name,Receiver_Email,context,token=None):
     except Exception as excp:   
         print("Something went wrong....",excp)
         return "error"
+
+# send_mail("sudesh", "manjrekarsudesh15@gmail.com", "resetPass", token=2682)

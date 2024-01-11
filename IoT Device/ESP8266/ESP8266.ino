@@ -5,13 +5,13 @@
 #define SERVER_IP "physically-secure-condor.ngrok-free.app"
 
 #ifndef STASSID
-#define STASSID "Manjrekar"
-#define STAPSK "15atharva07"
+#define STASSID "Shruti"
+#define STAPSK "shruti@13"
 #endif
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 WiFiClient client;
-HTTPClient http;
+
 
 void setup() {
 
@@ -47,6 +47,8 @@ void setup() {
 void loop() {
   // wait for WiFi connection
   if ((WiFi.status() == WL_CONNECTED)) {
+
+    HTTPClient http;
 
           lcd.clear();
           lcd.setCursor(1, 0);
@@ -85,7 +87,7 @@ void loop() {
 
       Serial.print("[HTTP] begin...\n");
       // configure traged server and url
-      http.begin(client, "https://" SERVER_IP "/decode");  // HTTP
+      http.begin(client, "http://" SERVER_IP "/decode");  // HTTP
       http.addHeader("Content-Type", "application/json");
   
       Serial.print("[HTTP] POST...\n");

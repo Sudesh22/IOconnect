@@ -41,6 +41,7 @@ def getUser(access_token):
     entry = access_token_db_collection.find_one({"access_token": f"{access_token}"})["db_name"]
     email = user_creds_collection.find_one({"name": f"{entry}"})["email"]
     return entry, email
+    
 # def get_token(email):
 #     user = user_creds_collection.find_one({"email": f"{email}"})
 #     print(user)

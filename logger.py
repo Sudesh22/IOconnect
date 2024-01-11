@@ -158,9 +158,12 @@ def saveOtp(access_token,otp):
 def isValid(access_token, otp):
     change_pass_db = client.change_pass_db
     change_pass_db_collection = change_pass_db.change_pass_db_collection
-    entry = change_pass_db_collection.find_one({"access_token": f"{access_token}"})
+    entry = change_pass_db_collection.find({"access_token": f"{access_token}"},).sort('_id', pymongo.DESCENDING).limit(1)[0]
+    print(entry["expires_at"])
+    print(datetime.now())
+    print(entry["expires_at"] > datetime.now())
     if entry["expires_at"] > datetime.now():
-        change_pass_db_collection.update_one({"access_token":f"{access_token}"},{"$set":{"processed_at":f"{datetime.now().strftime('%d/%m/%Y, %H:%M:%S')}"}})
+        change_pass_db_collection.update_one({"access_token": access_token, "expires_at": entry["expires_at"]},{"$set":{"processed_at":f"{datetime.now().strftime('%d/%m/%Y, %H:%M:%S')}"}})
         return True
     else:
         return False
@@ -168,7 +171,7 @@ def isValid(access_token, otp):
 def changePass(access_token, password):
     access_token_db = client.access_token_db
     access_token_db_collection = access_token_db.access_token_db_collection
-    entry = access_token_db_collection.find_one({"access_token": f"{access_token}"})
+    entry = access_token_db_collection.find({"access_token": f"{access_token}"},).sort('_id', pymongo.DESCENDING).limit(1)[0]
     user_creds = client.user_creds
     user_creds_collection = user_creds.user_creds_collection
     user_creds_collection.update_one({"name":f"{entry['db_name']}"},{"$set":{"password":f"{password}"}})

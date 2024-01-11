@@ -123,6 +123,7 @@ def verify():
     otp = randint(1000,9999)
     access_token = response["access_token"]
     name, email = getUser(access_token)
+    print(name, email)
     send_mail(name, email, "resetPass", otp)
     saveOtp(access_token, otp)
     return jsonify({"Status" : "Mail sent succesfully"})
