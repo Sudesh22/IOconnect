@@ -27,6 +27,9 @@ def send_mail(name,Receiver_Email,context,token=None):
         elif context == "resetSuccess":
             content = Mail.passwordSuccess["mailBody"].format(name=name)
             message["Subject"] = Mail.passwordSuccess["subject"]
+        elif context == "distress":
+            content = Mail.distress["mailBody"].format(name=name)
+            message["Subject"] = Mail.distress["subject"]
 
         message["From"] = Sender_Email
         message["To"] = Receiver_Email

@@ -5,8 +5,8 @@
 #define SERVER_IP "physically-secure-condor.ngrok-free.app"
 
 #ifndef STASSID
-#define STASSID "Shruti"
-#define STAPSK "shruti@13"
+#define STASSID "SUDESH"
+#define STAPSK "sud1ath7"
 #endif
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);

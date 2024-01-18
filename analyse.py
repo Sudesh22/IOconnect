@@ -24,7 +24,15 @@ def add_points():
     # get the names of databasess to update
 
     # open that db
-
+    db_name = entry["db_name"]
+    db_collection = entry["dash_collection"]
+    db = client[db_name]
+    data = db.get_collection(db_collection).find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(7)
+    # print(type(data))
+    DataList = []
+    for d in data:
+        DataList.append(tuple(d.values()))
+        # print(tuple(d))
     # read db get points
 
     # calculate avg

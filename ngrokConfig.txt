@@ -1,0 +1,15 @@
+version: "2"
+authtoken: 2SkOahLtirKTX4jIu1Es98senuZ_3vB4TqBbTnLvVhXo55kNB
+tunnels:
+  tcp1:
+    proto: http
+    addr: 3000
+    host_header: 3000
+    domain: physically-secure-condor.ngrok-free.app
+    schemes: [https, http]
+  tcp2:
+    proto: http
+    addr: 8081
+    host_header: 8081
+    domain: physically-secure-condor.ngrok-free.app
+    schemes: [https, http]

@@ -2,6 +2,8 @@ from dotenv import load_dotenv, find_dotenv
 import os, pprint, pymongo
 from pymongo import MongoClient
 from datetime import datetime,timedelta
+from verification import send_mail
+from authenticate import getUser
 
 load_dotenv(find_dotenv())
 
@@ -11,7 +13,7 @@ connection_string = f"mongodb+srv://Group1:{password}@testdb.dhmeogy.mongodb.net
 
 client = MongoClient(connection_string)
 
-def log_alert(Device_Id):
+def log_alert(condition, Device_Id=None, access_token=None):
     devices_db = client.devices_db
     devices_db_collection = devices_db.devices_db_collection
     entry = devices_db_collection.find_one({"device_id": Device_Id})
@@ -19,15 +21,47 @@ def log_alert(Device_Id):
     db_name = str(entry["username"])
     db_collection = db_name+"@notif"
     db = client[db_name]
-    now = datetime.strptime(datetime.now().strftime("%d/%m/%Y, %H:%M:%S"),"%d/%m/%Y, %H:%M:%S")
-    data = {
-            "company"     : entry["company_name"],
+    now = datetime.now().strftime("%d/%m/%y %H:%M:%S")
+    if condition == "alert":
+        data = {
+            "company"     : entry['company_name'],
             "device_id"   : Device_Id,
             "description" : "The box was tampered with",
             "headline"    : "Box Tampered!!!",
             "read"        : False,
             "timestamp"   : now,
-           }
+            "condition"   : "alert",
+    }
+    elif condition == "promotion":
+        data = {
+        "company"     : entry["company_name"],
+        "device_id"   : Device_Id,
+        "description" : "Team IOconnect wishes you a very Happy New Year",
+        "headline"    : "Another year of Togetherness!",
+        "read"        : False,
+        "timestamp"   : "01/01/24 00:00:00",
+        "condition"   : "promotion",
+    }
+    elif condition == "signIn":
+        data = {
+        "company"     : entry["company_name"],
+        "device_id"   : Device_Id,
+        "description" : "A new device just signed in!",
+        "headline"    : "Security Alert",
+        "read"        : False,
+        "timestamp"   : now,
+        "condition"   : "signIn",
+    }
+    elif condition == "action":
+        data = {
+        "company"     : entry["company_name"],
+        "device_id"   : Device_Id,
+        "description" : "The heater was turned off!",
+        "headline"    : "Action Performed",
+        "read"        : False,
+        "timestamp"   : now,
+        "condition"   : "action",
+    }
     db.get_collection(db_collection).insert_one(data).inserted_id
     return ("Data inserted with id:")
 

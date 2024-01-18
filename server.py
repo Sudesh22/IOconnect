@@ -48,7 +48,8 @@ def alert():
     Json = request.get_json()
     print(Json)
     device_id = Json["Device_Id"]
-    log_alert(device_id)
+    condition = Json["condition"]
+    log_alert(condition, Device_Id=device_id)
     return jsonify({"status" : "logged"})
     # send_mail()
 

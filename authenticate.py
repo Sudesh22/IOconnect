@@ -35,13 +35,17 @@ def authenticate(email, passwd, access_token):
         print("False")
         return False
 
-def getUser(access_token):
-    access_token_db = client.access_token_db
-    access_token_db_collection = access_token_db.access_token_db_collection
-    entry = access_token_db_collection.find_one({"access_token": f"{access_token}"})["db_name"]
-    email = user_creds_collection.find_one({"name": f"{entry}"})["email"]
-    return entry, email
-    
+def getUser(access_token=None, user=None):
+    if access_token != None:
+        access_token_db = client.access_token_db
+        access_token_db_collection = access_token_db.access_token_db_collection
+        entry = access_token_db_collection.find_one({"access_token": f"{access_token}"})["db_name"]
+        email = user_creds_collection.find_one({"name": f"{entry}"})["email"]
+        return entry, email
+    elif user != None:
+        email = user_creds_collection.find_one({"name": f"{user}"})["email"]
+        return user, email
+
 # def get_token(email):
 #     user = user_creds_collection.find_one({"email": f"{email}"})
 #     print(user)
