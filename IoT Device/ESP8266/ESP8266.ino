@@ -59,9 +59,9 @@ void loop() {
           Serial.print("Received data from Arduino: ");
           Serial.println(receivedData);
 
-          String encrypted, Method, route = "";
+          String encrypted, Method, route, hashh = "";
       
-          for (int i = 0; i < 3; i++) {
+          for (int i = 0; i < 4; i++) {
               int commaIndex = receivedData.indexOf(',');
           
               if (commaIndex != -1) {
@@ -70,12 +70,19 @@ void loop() {
                   switch (i){
                     case 0:
                       encrypted = Substring;
+                      Serial.println("Encrypted: " + encrypted);
                       break;
                     case 1:
-                      Method = Substring;
+                      hashh = Substring;
+                      Serial.println("Hash: " + hashh);
                       break;
                     case 2:
+                      Method = Substring;
+                      Serial.println("Method: " + Method);
+                      break;
+                    case 3:
                       route = Substring;
+                      Serial.println("Route: " + route);
                       break;
                     default:
                       break;
@@ -92,7 +99,7 @@ void loop() {
   
       Serial.print("[HTTP] POST...\n");
       // start connection and send HTTP header and body
-      int httpCode = http.POST("{\"encrypted\":\""+encrypted+"\"}");
+      int httpCode = http.POST("{\"encrypted\":\""+encrypted+"\", \"hash\": \""+hashh+"\"}");
   
       // httpCode will be negative on error
       if (httpCode > 0) {

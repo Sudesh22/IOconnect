@@ -17,9 +17,8 @@ def encrypt_AES_CBC_256(key, message):
     return ciphertext
 
 # Set the 12-bit key and plaintext message
-key = '0123456789010123'
-message = "{\"Device_Id\":1,\"Status\":\"Working\",\"Temp\":45,\"Humi\":25,\"Time\":\"02/10/23 12:00\"}"
-               
+key = '0000000000000000'
+message = "{'Device_Id': 1, 'Temperature1': 29.56, 'Temperature2': 30.19, 'Status': 'Working', 'Date': '2024-02-01', 'Time': '00:00:00'}"
 
 # Encrypt the message
 encrypted_message = encrypt_AES_CBC_256(key, message)

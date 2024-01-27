@@ -1,4 +1,5 @@
-import time, os
+import time, os, pymongo
+import numpy as np
 from pymongo import MongoClient
 from dotenv import load_dotenv, find_dotenv
 from datetime import datetime, date, timedelta
@@ -10,51 +11,67 @@ password = os.environ.get("MONGODB_PWD")
 connection_string = f"mongodb+srv://Group1:{password}@testdb.dhmeogy.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(connection_string)
 
-done = False
-
-today = date.today().strftime('%d')
+today = date.today().strftime('%Y-%m-%d')
 print("Program started at:",today)
 
-target = (date.today() + timedelta(days=7)).strftime('%d')
+target = (date.today() + timedelta(days=6)).strftime('%Y-%m-%d')
 print("Starting process at:",target)
 
-def add_points():
-    # get the creds from .env
+devices_db = client.devices_db
+devices_db_collection = devices_db.devices_db_collection
+entry = devices_db_collection.find_one()
+print(entry)
+db_name = str(entry["username"])
+db = client[db_name]
+dash_collection = db_name+"@dash"
+anlys_collection = db_name+"@analysis"
 
-    # get the names of databasess to update
+def add_to_db(p1,p2,l1,l2):
+    test_document = {
+    "Averages1" : p1.tolist(),
+    "Averages2" : p2.tolist(),
+    "Start" : today,
+    "End" : target,
+    "Linear_Regression1" : l1,
+    "Linear_Regression2" : l2,
+    }
 
-    # open that db
-    db_name = entry["db_name"]
-    db_collection = entry["dash_collection"]
-    db = client[db_name]
-    data = db.get_collection(db_collection).find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(7)
-    # print(type(data))
-    DataList = []
-    for d in data:
-        DataList.append(tuple(d.values()))
-        # print(tuple(d))
+    inserted_id = db.get_collection(anlys_collection).insert_one(test_document)
+    print("Data added to Db")
+
+def eval_points():
+    # get the names of databases to update    
+    
     # read db get points
+    points1 = np.array([])
+    points2 = np.array([])
+    for i in range(7):
+        tgt = (date.today() + timedelta(days=i)).strftime('%Y-%m-%d')
+        data = db.get_collection(dash_collection).find({"Date":tgt},{"_id" : 0}).sort('_id', pymongo.DESCENDING)
+        DataList1 = np.array([])
+        DataList2 = np.array([])
+        for d in data:
+            DataList1 = np.append(DataList1,tuple(d.values())[1])
+            DataList2 = np.append(DataList2,tuple(d.values())[2])
+    
+        # calculate avg
+        points1 = np.append(points1,np.mean(DataList1))
+        points2 = np.append(points2,np.mean(DataList2))
+        print("Data average for date:", tgt, "is t1:", points1[i], " t2:", points2[i])
 
-    # calculate avg
+    # get the linear regression points
+    lg1 = list(linear_regression(points1)['points'].values())
+    lg2 = list(linear_regression(points2)['points'].values())
 
-    # 7 points for each day
-    # points = [30.13517241379305, 29.29034482758627, 29.64896551724133, 29.73103448275868, 30.50068965517238, 29.2006896551724, 29.46413793103448]
-    points = [30.13517241,29.29034483,29.64896552,29.73103448,30.50068966,29.20068966,29.46413793,30.12965517,29.29034483,29.64896552,29.73055556,30.49862069,29.20689655,29.47103448,30.13517241,29.29586207,29.64896552,29.73793103,30.50068966,29.20068966,29.46758621,29.46896552,30.11310345,29.29655172,29.64896552,29.73655172,30.50068966,29.20068966,29.50827586,30.15310345]
+    # add to db -> 7 points per sensor, linregress points for 2 sensors
+    add_to_db(points1,points2,lg1,lg2)
 
-    # get the slope and y-int
-    print(linear_regression(points))
-
-    # add to db -> 7 points, slope, y-int,
-
-    # done = True
-
-    # target = today, target = now + 7
-    pass
+    # target = today, target = now + 6
+    today = target
+    target = (datetime.strptime(target,'%Y-%m-%d') + timedelta(days=6)).strftime('%Y-%m-%d')
 
 if (today>=target):
     print("Its due")
     add_points()
 else:
     print("Yet to due")
-
-add_points()

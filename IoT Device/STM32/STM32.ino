@@ -2,7 +2,10 @@
 
 #include <Arduino.h>
 #include <SoftwareSerial.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 #include "AESLib.h"
+#include "Seeed_mbedtls.h"
 
 //--------------------------------------------IMPORTING LIBRARIES------------------------------------------------------------------------------------------------------//
 
@@ -32,26 +35,29 @@ byte dec_iv[N_BLOCK] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 
 
-//-----------------------------------------------WIFI VARIABLES----------------------------------------------------------------------------------------------------------//
+//----------------------------------------------HASHING VARIABLES----------------------------------------------------------------------------------------------------------//
 
-// SSID PASSWORD
-String WifiSSID = "Manjrekar";
-String WifiPSWD = "15atharva07";
+char *key = "secretKey";
+byte hmacResult[32];
 
-// SERVER DATA
-String IP = "192.168.0.106";
-int Port = 8081;
+//----------------------------------------------HASHING VARIABLES----------------------------------------------------------------------------------------------------------//
 
-// AT COMMANDS LIST
-String Data;
-String ESPReset = "AT+RST";
-String ESPAT = "AT";
-String ESPChangeMode = "AT+CWMODE=1";
-String ESPGetWifi = "AT+CWJAP=\""+String(WifiSSID)+"\",\""+String(WifiPSWD)+"\"\r\n";
-String ESPBeginTransmission = "AT+CIPSTART=\"TCP\",\""+String(IP)+"\","+String(Port)+"\r\n";
-String ESPEndTransmission = "AT+CIPCLOSE\r\n";
 
-//-----------------------------------------------WIFI VARIABLES----------------------------------------------------------------------------------------------------------//
+
+//-----------------------------------------------I/O VARIABLES----------------------------------------------------------------------------------------------------------//
+
+const int analogInPin1 = A0;
+const int analogInPin2 = A3;
+const int buzz = 4;
+const int SENSOR1 = 8;
+const int SENSOR2 = 9;
+int sensorValue1 = 0;
+int sensorValue2 = 0;
+float sensorr1 ;
+float sensorr2 ;  
+
+//-----------------------------------------------I/O VARIABLES----------------------------------------------------------------------------------------------------------//
+
 
 
 //--------------------------------------------OBJECT INITIALIZATION------------------------------------------------------------------------------------------------------//
@@ -62,7 +68,17 @@ SoftwareSerial esp8266(2, 3); // RX, TX pins on STM32F446RE (you can use any ava
 // Initializing the AESLib Object using AESLib Class
 AESLib aesLib;
 
+// Initialising the OneWire Objects
+OneWire oneWire1(SENSOR1);
+OneWire oneWire2(SENSOR2);
+
+// Initialising the DallasTemperature objects with OneWire Objects
+DallasTemperature Temp1(&oneWire1);
+DallasTemperature Temp2(&oneWire2);  
+
 //--------------------------------------------OBJECT INITIALIZATION------------------------------------------------------------------------------------------------------//
+
+
 
 //--------------------------------------------FUNCTION DECLARATIONS------------------------------------------------------------------------------------------------------//
 
@@ -82,36 +98,18 @@ void aes_init() {
   Serial.println(encrypt_impl(strdup(plaintext.c_str()), aes_iv));
 }
 
-void ESP_Init(){
+void TransmitJson(String method, String route, String encrypted, String hashop){
 
-  // Initializing the ESP8266
-  esp8266.println(ESPReset);                // Resetting...
-  delay(3000);
-  esp8266.println(ESPAT);                   // Check status by sending AT...
-  delay(2000);
-  esp8266.println(ESPChangeMode);           // Setting ESP Mode 1...
-  delay(3000);
-  esp8266.println(ESPGetWifi);              // Connecting to Wifi...
-  delay(5000);
- 
-}
+  payload = encrypted+","+hashop+","+method+","+route+",";
 
-void TransmitJson(String encrypted){
-
-  payload = "{\"encrypted\" : \""+encrypted+"\"}";
-
-  String ESPPost = "POST /check HTTP/1.1\r\nHost: 192.168.0.106\r\nContent-Type: application/json\r\nContent-Length:"+String(payload.length())+"\r\n\r\n"+String(payload)+"\r\n";
-  String ESPSendLength = "AT+CIPSEND="+String(ESPPost.length())+"\r\n";
+//  String ESPPost = String(method)+" "+String(route)+" HTTP/1.1\r\nHost: 192.168.0.106\r\nContent-Type: application/json\r\nContent-Length:"+String(payload.length())+"\r\n\r\n"+String(payload)+"\r\n";
+//  String ESPSendLength = "AT+CIPSEND="+String(ESPPost.length())+"\r\n";
 
   // TCP Transmission
-  esp8266.println(ESPBeginTransmission);    // Begin TCP Transmission...
-  delay(2000);
-  esp8266.println(ESPSendLength);           // Length of HTTP Request Data...
-  delay(1000);
-  esp8266.println(ESPPost);                 // Sending HTTP POST Request...
-  delay(3000);
-  esp8266.println(ESPEndTransmission);      // Ending the TCP Transmission...
-  delay(3000);
+
+  esp8266.println(payload);
+
+  delay(5000);
    
 }
 
@@ -128,7 +126,11 @@ void setup() {
   // Begin esp8266 Communication
   esp8266.begin(115200);
 
-  delay(1000);
+  // Initializing the sensors
+  Temp1.begin();
+  Temp2.begin();
+
+  pinMode(buzz, OUTPUT);
 
   aes_init();
   aesLib.set_paddingmode(paddingMode::CMS);
@@ -144,8 +146,6 @@ void setup() {
 
   char b64dec[ base64_dec_len(b64enc, sizeof(b64enc))];
   base64_decode(b64dec, b64enc, sizeof(b64enc));
-
-  ESP_Init();
  
 }
 
@@ -157,10 +157,31 @@ void setup() {
 
 void loop() {
 
+  sensorValue1 = analogRead(analogInPin1);
+//  sensorValue2 = analogRead(analogInPin2);
+ 
+  Serial.print("sensorValue1: ");
+  Serial.println(sensorValue1);
+ 
+//  Serial.print("sensorValue2: ");
+//  Serial.println(sensorValue2);
+ 
+  if (sensorValue1 > 975){
+    digitalWrite(buzz, LOW);
+ 
+
   // Sensor Readings Begin
 
-  Data = "{\"Temperature\": \"hi\", \"Humidity\": \"hi\", \"Status\": \"hi\"}";
- 
+  // Initiating a temperature conversion process in a DallasTemperature sensor
+  Temp1.requestTemperatures();
+  Temp2.requestTemperatures();
+
+  // Storing the values into float variables using getTempCByIndex() method
+  sensorr1 = Temp1.getTempCByIndex(0);
+  sensorr2 = Temp2.getTempCByIndex(0);
+
+  String Data = "{\"Device_Id\": \"1\", \"Status\": \"Working\", \"Temperature1\": " + String(sensorr1) + ", \"Temperature2\": " + String(sensorr2) + ", \"Date\": \"24-01-27\", \"Time\": \"00:00:00\"}";
+  Serial.println(Data);
   // Sensor Readings End
 
  
@@ -186,10 +207,40 @@ void loop() {
   // Data Encryption End
 
 
+  // Data Hashing Begin
+
+  const char *hashpay  = Data.c_str();
+
+  mbedtls_md_context_t ctx;
+  mbedtls_md_type_t md_type = MBEDTLS_MD_SHA256;
+ 
+  const size_t payloadLength = strlen(hashpay);
+  const size_t keyLength = strlen(key);            
+ 
+  mbedtls_md_init(&ctx);
+  mbedtls_md_setup(&ctx, mbedtls_md_info_from_type(md_type), 1);
+  mbedtls_md_hmac_starts(&ctx, (const unsigned char *) key, keyLength);
+  mbedtls_md_hmac_update(&ctx, (const unsigned char *) hashpay, payloadLength);
+  mbedtls_md_hmac_finish(&ctx, hmacResult);
+  mbedtls_md_free(&ctx);
+
+  Serial.print("Hash: ");
+  String hashop = "";
+ 
+  for(int i= 0; i< sizeof(hmacResult); i++){
+      char str[3];
+      sprintf(str, "%02x", (int)hmacResult[i]);
+      hashop += str;
+      Serial.print(str);
+  }
+ 
+  // Data Hashing Begin
+
+
  
   // Encrypted Payload Transmission Begin
  
-  TransmitJson(encrypted);
+  TransmitJson("POST", "/decode", encrypted, hashop);
  
   // Encrypted Payload Transmission End
 
@@ -206,6 +257,10 @@ void loop() {
     char c = Serial.read();
     esp8266.write(c);
   }
+  }
+ 
+    digitalWrite(buzz, HIGH);
+ 
 
   // Status Printing on Serial terminal End
 }

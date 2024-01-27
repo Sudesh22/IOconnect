@@ -57,16 +57,16 @@ def alert():
 def decode():
     Json = request.get_json()
     encrypted = Json["encrypted"]
-    # hash = Json["hash"]
+    hash = Json["hash"]
     encryption_key = os.environ.get("AES_KEY")
     decrypted = decrypt_AES_CBC_256(encryption_key, encrypted)
-    # if verify_hash(decrypted,hash):
-    data = ast.literal_eval(str(decrypted))
-    print(data)
-    log_to_database(data,Json)
-    return jsonify({"status":"received"})
-    # else:
-    #     return jsonify({"status":"Data compromised not saved to db"})
+    if verify_hash(decrypted,hash):
+        data = ast.literal_eval(str(decrypted))
+        print(data)
+        log_to_database(data,Json)
+        return jsonify({"status":"received"})
+    else:
+        return jsonify({"status":"Data compromised not saved to db"})
     
 @app.post("/signin")
 # @cache.cached(timeout=cache_timeout) 
@@ -181,4 +181,4 @@ if __name__ == "__main__":
     # add_ip("frontend/src/App.js", 10, "    const baseUrl = \"" + "http://" + str(IPAddr) + ":" + str(port) + "\";\n")
     add_ip("frontend/package.json", 4, "  \"proxy\":\"" + "http://" + str(IPAddr) + ":" + str(port) + "\",\n")
     
-    app.run(host=IPAddr, port=port)
+    app.run(host="0.0.0.0", port=port)

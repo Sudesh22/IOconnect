@@ -160,21 +160,21 @@ def showAnalysis(access_token,time_frame):
     db_name = entry["db_name"]
     db_collection = entry["analysis_collection"]
     db = client[db_name]
-    date = str(int(datetime.now().strftime("%d"))-int(datetime.now().strftime("%u")) + 1)
+    date = (datetime.now()-timedelta(days = int((datetime.now().strftime("%u")))-1))
     print(date)
     if time_frame == "Weekly":
-        data = db.get_collection(db_collection).find({"Start":datetime.strptime(str(date+'/12/2023'),'%d/%m/%Y'),"End": datetime.strptime(str(date+'/12/2023'),'%d/%m/%Y') + timedelta(days=6)},{"_id" : 0,"Start":0,"End":0,"Averages":0})
+        data = db.get_collection(db_collection).find({"Start":str(date).split()[0],"End": str(date + timedelta(days=6)).split()[0]},{"_id" : 0,"Start":0,"End":0,"Averages1":0,"Averages2":0})
     elif time_frame == "Monthly":
-        data = db.get_collection(db_collection).find({"Start":datetime.strptime(str('01/12/2023'),'%d/%m/%Y'),"End": datetime.strptime(str('01/12/2023'),'%d/%m/%Y') + timedelta(days=30)},{"_id" : 0,"Start":0,"End":0,"Averages":0})
+        data = db.get_collection(db_collection).find({"Start":str(date).split()[0],"End": str(date + timedelta(days=30)).split()[0]},{"_id" : 0,"Start":0,"End":0,"Averages":0})
     elif time_frame == "Yearly":
-        data = db.get_collection(db_collection).find({"Start":datetime.strptime(str('01/12/2023'),'%d/%m/%Y'),"End": datetime.strptime(str('01/12/2023'),'%d/%m/%Y') + timedelta(days=30)},{"_id" : 0,"Start":0,"End":0,"Averages":0})
+        data = db.get_collection(db_collection).find({"Start":str(date).split()[0],"End": str(date + timedelta(days=30)).split()[0]},{"_id" : 0,"Start":0,"End":0,"Averages":0})
     # print(type(data))
     print(time_frame)
     DataList = []
     for d in data:
         DataList.append(tuple(d.values()))
         # print(tuple(d))
-    return DataList[0][0]
+    return DataList
 
 def saveOtp(access_token,otp):
     change_pass_db = client.change_pass_db

@@ -22,13 +22,13 @@ def linear_regression(points):
     # X = dataset['SECONDS'].values.reshape(-1,1)
     # X = np.array([[1],[2],[3],[4],[5],[6],[7]])
     X = np.array([[x+1] for x in range(len(points))])
-    print(X)
+    # print(X)
 
     # now take points from the analysis db to the linear reg code and then generate the pred points
 
     # Y = dataset.iloc[:, :-1]
     Y = np.array(points)
-    print(Y)
+    # print(Y)
     model = LinearRegression()
     model.fit(X, Y)
 
