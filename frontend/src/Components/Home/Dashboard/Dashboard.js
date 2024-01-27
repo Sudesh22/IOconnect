@@ -30,7 +30,7 @@ export default function Dashboard({ baseUrl }) {
         const deviceStatus = data.map((data) => data[1]);
         const temperature = data.map((data) => data[2]);
         const humidity = data.map((data) => data[3]);
-        const Time = data.map((data) => data[4]);
+        const Time = data.map((data) => data[5]);
         console.log(deviceStatus);
         
 

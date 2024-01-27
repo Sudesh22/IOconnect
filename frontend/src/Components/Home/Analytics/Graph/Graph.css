@@ -9,3 +9,7 @@
   background-color: #0d0d0d;
   border: 3px solid rgba(255, 255, 255, 0.3);
 }
+
+.graph-container{
+  margin: 20px;
+}

@@ -1,15 +1,11 @@
 import './Settings.css';
 import React from "react";
 import * as FaIcons from 'react-icons/fa';
-import * as BaIcons from 'react-icons/bi'
+import * as LuIcons from "react-icons/lu";
+
 
 export default function Settings({ onRouteChange, baseUrl }){
 
-    // const [setting, setSetting] = React.useState({
-    //     signUpName: "",
-    //     signUpEmail: "",
-    //     signUpPassword: "",
-    // });
       function changePass(e) {
         fetch(`${baseUrl}/changePass`, {
             method: "post",
@@ -55,8 +51,8 @@ export default function Settings({ onRouteChange, baseUrl }){
                 <div className="option" onClick={getDevices}>
                     <div className='title'>
                         <div className='icon'>
-                            <BaIcons.BiShapeCircle />
-                        <span > Deployed Devices</span> 
+                            <LuIcons.LuMail />
+                        <span > Recovery Email</span> 
                         </div>
                     </div>
                 </div>

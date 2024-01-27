@@ -95,7 +95,8 @@ export default function Analytics({ baseUrl }) {
   }
 
   const [chartData, setChartData] = React.useState({
-    temperature: [],
+    temperature1: [],
+    temperature2: [],
     valuee: 1,
     textt: "Daily",
   });
@@ -116,10 +117,10 @@ export default function Analytics({ baseUrl }) {
     })
       .then((response) => response.json())
       .then(responsee => {
-        console.log(responsee);
         setChartData((prev) => ({
           ...prev,
-          temperature: responsee,
+          temperature1: responsee[0],
+          temperature2: responsee[1],
           valuee: value,
           textt: timeframe,
         }));
@@ -144,7 +145,8 @@ export default function Analytics({ baseUrl }) {
       </div>
       <div className="analytics-container">
         <br />
-        <Graph condition={"Temperature"} chartData={chartData} timeframe={chartData.textt} />
+        <Graph condition={"Temperature1"} chartData={chartData} timeframe={chartData.textt} />
+        <Graph condition={"Temperature2"} chartData={chartData} timeframe={chartData.textt} />
         <p className="filter">Time Frame</p>
         <IOSSlider
           sx={{

@@ -169,12 +169,13 @@ def showAnalysis(access_token,time_frame):
     elif time_frame == "Yearly":
         data = db.get_collection(db_collection).find({"Start":str(date).split()[0],"End": str(date + timedelta(days=30)).split()[0]},{"_id" : 0,"Start":0,"End":0,"Averages":0})
     # print(type(data))
-    print(time_frame)
+    # print(time_frame)
     DataList = []
     for d in data:
         DataList.append(tuple(d.values()))
         # print(tuple(d))
-    return DataList
+    # print(DataList[0])    
+    return DataList[0]
 
 def saveOtp(access_token,otp):
     change_pass_db = client.change_pass_db
@@ -230,10 +231,25 @@ def showConfig(access_token):
     access_token_db_collection = access_token_db.access_token_db_collection
     entry = access_token_db_collection.find_one({"access_token": f"{access_token}"})
     db_name = entry["db_name"]
-    notif_db = entry["config_collection"]
+    config_db = entry["config_collection"]
     db = client[db_name]
-    data = db.get_collection(notif_db).find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(1)
+    data = db.get_collection(config_db).find({},{"_id" : 0}).sort('_id', pymongo.DESCENDING).limit(1)
     return data
+
+def addConfig(access_token, configMail):
+    access_token_db = client.access_token_db
+    access_token_db_collection = access_token_db.access_token_db_collection
+    entry = access_token_db_collection.find_one({"access_token": f"{access_token}"})
+    db_name = entry["db_name"]
+    config_db = entry["config_collection"]
+    db = client[db_name]
+    now = datetime.strptime(datetime.now().strftime("%d/%m/%Y, %H:%M:%S"),"%d/%m/%Y, %H:%M:%S")
+    data = {"configMail" :           configMail,
+            "access_token":          access_token,
+            "date_added":            now,
+           } 
+    db.get_collection(config_db).insert_one(data)
+    return {"Status": "recovery mail added successfully"}
 
 def dev_db():
     devices_db = client.devices_db

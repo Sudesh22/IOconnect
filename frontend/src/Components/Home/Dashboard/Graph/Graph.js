@@ -43,15 +43,11 @@ function getYAxisData(condition, chartData) {
   }
   return data;
 }
-
-function splitDateTime(dateTime) {
-  return dateTime.split(" ");
-  //   dateTime.split(/(\s+)/)
-}
+ 
 function getXAxisData(chartData) {
   const timeOnlyArray = chartData.Time.map((time) => {
-    const timeParts = splitDateTime(time);
-    return timeParts[1]; // Extracting the time part
+    const timeParts = time;
+    return timeParts; // Extracting the time part
   });
   return timeOnlyArray;
 }

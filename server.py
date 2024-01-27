@@ -1,5 +1,5 @@
 from Cryptography import decrypt_AES_CBC_256, verify_hash
-from logger import log_to_database, log_alert, add_user, showData, isValid, saveOtp, changePass, showNotif, showConfig, showAnalysis, showHome
+from logger import log_to_database, log_alert, add_user, showData, isValid, saveOtp, changePass, showNotif, showConfig, addConfig, showAnalysis, showHome
 from Analytics.Vedantrik.Linear_Regression.linear_regression import linear_regression
 from authenticate import authenticate, getUser
 from verification import send_mail
@@ -101,7 +101,7 @@ def analysis():
     data = request.get_json()
     access_token = data["access_token"]
     time_frame = data["timeframe"]
-    payload = showAnalysis(access_token,time_frame)
+    payload = showAnalysis(access_token, time_frame)
     return jsonify(payload)
 
 @app.post("/signup")
@@ -155,6 +155,15 @@ def notification():
     access_token = response["access_token"]
     notif_data = showNotif(access_token)
     return jsonify(notif_data)
+
+@app.post("/addMail")
+def addMail():
+    response = request.get_json()
+    print(response)
+    access_token = response["access_token"]
+    configMail = response["configMail"]
+    config_data = addConfig(access_token, configMail)
+    return jsonify(config_data)
 
 @app.post("/config")
 def configuration():
