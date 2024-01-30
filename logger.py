@@ -73,6 +73,8 @@ def log_to_database(data, Json):
     db_name = str(entry["username"])
     db_collection = db_name+"@dash"
     db = client[db_name]
+    data["Date"] = datetime.now().strftime("%d-%m-%Y")
+    data["Time"] = datetime.now().strftime("%H:%M:%S")
     db.get_collection(db_collection).insert_one(data).inserted_id
     return ("Data inserted with id:")
 

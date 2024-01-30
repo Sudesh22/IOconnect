@@ -180,7 +180,7 @@ void loop() {
   sensorr1 = Temp1.getTempCByIndex(0);
   sensorr2 = Temp2.getTempCByIndex(0);
 
-  String Data = "{\"Device_Id\": \"1\", \"Status\": \"Working\", \"Temperature1\": " + String(sensorr1) + ", \"Temperature2\": " + String(sensorr2) + ", \"Date\": \"24-01-27\", \"Time\": \"00:00:00\"}";
+  String Data = "{\"Device_Id\": \"1\", \"Status\": \"Working\", \"Temperature1\": " + String(sensorr1) + ", \"Temperature2\": " + String(sensorr2) + "}";
   Serial.println(Data);
   // Sensor Readings End
 

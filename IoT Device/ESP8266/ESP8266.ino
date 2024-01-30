@@ -1,8 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <LiquidCrystal_I2C.h>
-#include <NTPClient.h>
-#include <WiFiUdp.h>
 
 #define SERVER_IP "physically-secure-condor.ngrok-free.app"
 
@@ -14,9 +12,6 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 WiFiClient client;
 
-// Define NTP Client to get time
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org");
 
 void setup() {
 
@@ -24,10 +19,10 @@ void setup() {
   
   lcd.init();
   lcd.backlight();
-  timeClient.begin();
-  timeClient.setTimeOffset(19800);
   
   WiFi.begin(STASSID, STAPSK);
+
+  
 
   lcd.clear();
   lcd.setCursor(3, 0);
@@ -49,42 +44,6 @@ void setup() {
   delay(1000);
 }
 
-String getTime_(){
-  timeClient.update();
-
-  time_t epochTime = timeClient.getEpochTime();  
-  String formattedTime = timeClient.getFormattedTime();
-  Serial.print("Formatted Time: ");
-  Serial.println(formattedTime);  
-  
-  //Get a time structure
-  struct tm *ptm = gmtime ((time_t *)&epochTime); 
-  int monthDay = ptm->tm_mday;
-  String monthD;
-  if (monthDay<10){
-    monthD = "0" + String(monthDay);
-  }
-  else{
-    monthD = String(monthDay);
-  }
-  int currentMonth = ptm->tm_mon+1;
-  String currentM;
-  if (currentMonth<10){
-    currentM = "0" + String(currentMonth);
-  }
-  else{
-    currentM = String(currentMonth);
-  }
-  int currentYear = ptm->tm_year+1900;
-  
-  //Print complete date:
-  String currentDate = String(currentYear) + "-" + String(currentM) + "-" + String(monthD);
-  Serial.print("Current date: ");
-  Serial.println(currentDate.substring(2,-1));
-
-  return currentDate.substring(2,-1) + " " + formattedTime;
-}
-
 void loop() {
   // wait for WiFi connection
   if ((WiFi.status() == WL_CONNECTED)) {
@@ -95,13 +54,9 @@ void loop() {
           lcd.setCursor(1, 0);
           lcd.print("System Online!");
 
-          String receivedData = Serial.readString();
+          Serial.flush();
 
-          if (receivedData == "Date")
-          {
-          Serial.print(getTime_());
-          }
-          else{
+          String receivedData = Serial.readString();
           
           Serial.print("Received data from Arduino: ");
           Serial.println(receivedData);
@@ -137,8 +92,6 @@ void loop() {
                   }
               }
           }
-      
-
       Serial.print("[HTTP] begin...\n");
       // configure traged server and url
       http.begin(client, "http://" SERVER_IP "/decode");  // HTTP
@@ -166,7 +119,6 @@ void loop() {
     }
 
     http.end();
-  }
   }
   else{
       lcd.clear();

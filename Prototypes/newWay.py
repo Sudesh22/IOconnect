@@ -1,19 +1,19 @@
-isSuccess = False
+isSuccess = True
 
-def stuff():
+def stuff(isSuccess):
     try:
-        isSuccess = False
+        # isSuccess = False
         return("return from try")
     except:
-        isSuccess = True
+        # isSuccess = True
         return "return from except"
     finally:
         if isSuccess:
             print("printed from finally block")
         else:
             print("wasn't success do nothing")
-# x = stuff()
-# print(x)
+x = stuff(isSuccess)
+print(x)
 
 def new(a,b,c=None):
     if c is None:

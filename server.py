@@ -61,10 +61,12 @@ def decode():
     encryption_key = os.environ.get("AES_KEY")
     decrypted = decrypt_AES_CBC_256(encryption_key, encrypted)
     if verify_hash(decrypted,hash):
-        data = ast.literal_eval(str(decrypted))
-        print(data)
-        log_to_database(data,Json)
-        return jsonify({"status":"received"})
+        try:
+            return jsonify({"status":"received"})
+        finally:
+            data = ast.literal_eval(str(decrypted))
+            print(data)
+            log_to_database(data,Json)
     else:
         return jsonify({"status":"Data compromised not saved to db"})
     
